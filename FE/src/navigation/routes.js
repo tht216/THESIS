@@ -1,0 +1,18 @@
+export const routes = {
+    LOGIN: 'LoginScreen',
+    FORGOT: 'ForgotPasswordScreen',
+    SPLASH: 'SplashScreen',
+    REGISTER: 'RegisterScreen',
+    HOMETAB: 'HomeTabScreen',
+    PROFILETAB: 'ProfieTabScreen',
+    FAVORITES: 'FavoritesTabScreen',
+    BASKETTAB: 'BasketTabScreen',
+    RESTAURANT: 'RestaurantTabScreen',
+    HOME: 'HomeStackScreen',
+    DETAIL: 'DetailStackScreen',
+    BASKET: 'BasketStackScreen',
+    CHECKOUT: 'CheckoutStackScreen',
+    DELIVERY: 'DeliveyStackScreen',
+    PROFILE: 'ProfileStackScreen',
+    RESTAURANTDETAIL: 'RestaurantDetailStackScreen',
+  };

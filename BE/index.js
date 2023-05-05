@@ -6,21 +6,38 @@ const Mongo = require("./config/db");
 const EmailService = require("./utils/EmailService");
 const catchError = require("./middleware/error");
 const authRoutes = require("./route/authRoutes");
-// const ticketRoutes = require("./route/ticketRoutes");
 const companyRoutes = require("./route/companyRoutes");
-const userRoutes = require("./route/userRoutes");
+const customerRoutes = require("./route/customerRoutes");
+const serviceRoutes = require("./route/serviceRoutes");
 const app = express();
+const http = require('http').createServer(app);
 app.use(express.json());
 app.use(cors());
 EmailService.init();
 Mongo.connect();
+const socketIO = require('socket.io')(http, {
+  cors: {
+      origin: "<http://localhost:3000>"
+  }
+});
 
+//👇🏻 Add this before the app.get() block
+socketIO.on('connection', (socket) => {
+  console.log(`⚡: ${socket.id} user just connected!`);
+
+  socket.on('disconnect', () => {
+    socket.disconnect()
+    console.log('🔥: A user disconnected');
+  });
+});
 app.use("/api/v1/auth", authRoutes);
-// app.use("/api/v1/ticket", ticketRoutes);
 app.use("/api/v1/company", companyRoutes);
-app.use("/api/v1/user", userRoutes);
+app.use("/api/v1/customer", customerRoutes);
+app.use("/api/v1/service", serviceRoutes)
 app.use(catchError);
+
+
 const port = process.env.PORT || 3000;
-app.listen(port, () => {
+http.listen(port, () => {
   console.log(`Server is running on PORT ${port}`);
 });

@@ -2,18 +2,22 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const PaymentSchema = new Schema(
   {
-    PaymentStatus: {
+    isPaid: {
       type: Boolean,
       default: false,
       required: [true, "Payment Status is required"],
     },
-    ticketID: {
+    _id: {
       type: mongoose.Types.ObjectId,
-      ref: "Ticket",
+      ref: "pickup",
     },
+    price: {
+      type: Number,
+      required: [true, "Price is required"]
+    }
   },
   {
-    collection: "tcat-payments",
+    collection: "Payment",
     timestamps: true,
   }
 );

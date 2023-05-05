@@ -15,12 +15,6 @@ const { findByIdAndUpdate } = require("../models/timeAccess");
 
 exports.register = catchAsync(async (req, res) => {
   const { name, email, phone, password } = req.body;
-  const user = await Account.findOne({
-    email: email,
-  });
-  if (user) {
-    throw new ApiError(400, "Account has been registered !");
-  }
   const account = await Account.create({
     name,
     email,
@@ -71,13 +65,14 @@ exports.verifyOTP = catchAsync(async (req, res) => {
       });
       const isPoint = await Customer.findOne({ accountId: id });
       if (!isPoint) {
-        await Customer.create({ accountId: id, point: 0 });
+        await Customer.create({ _id: id });
       }
     }
   }
 });
 exports.login = catchAsync(async (req, res) => {
   const { email, password } = req.body;
+  console.log(req);
   const existEmail = await Account.findOne({ email });
   if (!existEmail) {
     throw new ApiError(400, "Email or password is incorrect");
@@ -120,7 +115,7 @@ exports.login = catchAsync(async (req, res) => {
             expiresIn: "1h",
           }
         );
-
+          console.log(token)
         res.json({
           success: true,
           token,
@@ -150,6 +145,7 @@ exports.login = catchAsync(async (req, res) => {
         "OTP VERIFICATION",
         `Your OTP code: ${otpcode}`
       );
+
       res.status(200).json({
         success: true,
         message: "Check your mail for OTP code",
@@ -226,7 +222,7 @@ exports.resetPassword = catchAsync(async (req, res) => {
   await EmailService.sendMail(
     process.env.EMAIL,
     user.email,
-    "[FROM DAO COMPANY] - Success Reset password",
+    "Success Reset password",
     "Your password is successfully reset"
   );
   res.status(200).json({
@@ -259,7 +255,7 @@ exports.forgetPassword = catchAsync(async (req, res) => {
   await EmailService.sendMail(
     process.env.EMAIL,
     email,
-    "[Reset password] - FROM DAO COMPANY",
+    "[Reset password]",
     `Here is the link to reset your password: ${link}`
   );
   res.status(200).json({

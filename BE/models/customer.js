@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 const bcrypt = require("bcryptjs");
 const CustomerSchema = new Schema(
   {
-    accountId: {
+    _id: {
       type: Schema.Types.ObjectId,
       required: true,
       ref: "account",

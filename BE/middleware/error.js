@@ -1,6 +1,6 @@
 const catchError = (err, req, res, next) => {
   // xem lỗi
-  //console.log(JSON.stringify(err, null, 2));
+  console.log(JSON.stringify(err, null, 2));
 
   // lỗi liên quan đến validation mongoose
   if (err.name === "ValidationError") {
@@ -22,11 +22,13 @@ const catchError = (err, req, res, next) => {
   }
   if (err.code === 11000) {
     err.statusCode = 400;
-    const errorObj = {};
-    errorObj["duplicate"] = `The ${
-      Object.keys(err.keyPattern)[0]
-    } has been used`;
-    err.message = errorObj;
+    // const errorObj = {};
+    // errorObj["duplicate"] = `The ${
+    //   Object.keys(err.keyPattern)[0]
+    // } has been used`;
+    err.message = `The ${
+      Object.keys(err.keyPattern).join(" and ")
+    } has been registered`;
   } // format in ra lỗi : dạng object
   res.status(err.statusCode || 500).json({
     // 500 là lỗi liên quan đến server
