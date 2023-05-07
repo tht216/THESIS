@@ -16,12 +16,11 @@ import {useLoginMutation} from '../../../utils/api';
 import {useDispatch} from 'react-redux';
 import {showMessage} from 'react-native-flash-message';
 import Loading from '../../components/Loading';
-import {loginAccount} from '../../../context/userSlicer';
+import {loginAccount, saveId} from '../../../context/userSlicer';
 import {saveStorage} from '../../../utils/localstorage';
 
 const Login = ({navigation}) => {
-  // const {loading} = authFirebase();
-  const [login, {isLoading, data, error}] = useLoginMutation();
+  const [login, {isLoading}] = useLoginMutation();
   const dispatch = useDispatch();
   const initailLoginValue = {
     email: '',
@@ -44,14 +43,19 @@ const Login = ({navigation}) => {
           message: 'Login successful',
           type: 'success',
         });
-        dispatch(loginAccount());
+        console.log(payload);
+        dispatch(loginAccount(payload.name));
       })
-      .catch(error =>
+      .catch(error => {
+        if(error.status === 403){
+          dispatch(saveId(error.data.customerId._id))
+          navigation.navigate(routes.VERIFY)
+        }
         showMessage({
           message: error.data.message,
           type: 'danger',
-        }),
-      );
+        });
+      });
   };
   const onClickSignUp = () => {
     navigation.navigate(routes.REGISTER);

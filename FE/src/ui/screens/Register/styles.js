@@ -2,7 +2,8 @@ import {StyleSheet} from 'react-native';
 import {colors} from '../../../themes/Colors';
 import {units} from '../../../themes/Units';
 
-export default StyleSheet.create({imageContainer: {
+export default StyleSheet.create({
+  imageContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },

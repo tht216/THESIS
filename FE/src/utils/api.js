@@ -9,7 +9,7 @@ export const api = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: 'http://192.168.1.7:3000/api/v1',
 
-    prepareHeaders: (headers) => {
+    prepareHeaders: headers => {
       const token = getStorage('token');
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
@@ -27,6 +27,27 @@ export const api = createApi({
         body: credentials,
       }),
     }),
+    register: builder.mutation({
+      query: credentials => ({
+        url: `auth/register/`,
+        method: 'POST',
+        body: credentials,
+      }),
+    }),
+    resend: builder.mutation({
+      query: id => ({
+        url: `auth/resend/${id}`,
+        method: 'POST',
+        body: id,
+      }),
+    }),
+    verifyAccount: builder.mutation({
+      query: ({id, ...patch}) => ({
+        url: `auth/verifyOTP/${id}`,
+        method: 'POST',
+        body: patch,
+      }),
+    }),
   }),
 });
-export const {useLoginMutation} = api;
+export const {useLoginMutation, useRegisterMutation, useResendMutation, useVerifyAccountMutation} = api;

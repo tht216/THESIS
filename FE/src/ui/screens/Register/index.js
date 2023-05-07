@@ -17,12 +17,21 @@ import * as Yup from 'yup';
 import styles from './styles';
 import CircleImage from '../../../assets/svgs/circle';
 import OrangeCircleImage from '../../../assets/svgs/orangeCircle';
-// import Loading from '../components/Loading';
+import {routes} from '../../../navigation/routes';
+import {useRegisterMutation} from '../../../utils/api';
+import {showMessage} from 'react-native-flash-message';
+import {useDispatch} from 'react-redux';
+import Loading from '../../components/Loading';
+import { saveId } from '../../../context/userSlicer';
 
 const Register = ({navigation}) => {
-  // const {loading, createUser} = authFirebase();
+  const [register, {isLoading, data, error}] = useRegisterMutation();
+  const dispatch = useDispatch();
+
   const phoneRegExp =
     /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+  const passwordExp =
+    /^(?!.*\s)(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[~`!@#$%^&*()--+={}\[\]|\\:;"'<>,.?/_₹])/;
   const registerIntialValue = {
     email: '',
     password: '',
@@ -41,23 +50,54 @@ const Register = ({navigation}) => {
       .required('Phone number is required'),
     password: Yup.string()
       .min(6, 'Password must be a minimum of 6 characters')
+      .max(30, 'Password must be a maximum of 30 characters')
+      .matches(
+        passwordExp,
+        'Password must contain uppercase, special character and number',
+      )
       .required('Password is required'),
     rePassword: Yup.string()
       .oneOf([Yup.ref('password')], 'Passwords are not the same')
       .required('Confirm password is required'),
   });
 
-  const handleRegister = values => {
-    // createUser(values.email, values.password, onClickLogin);
+  const handleRegister = ({email, phone, password, name}) => {
+    const data = {email, phone, password, name};
+    register(data)
+      .then(payload => {
+        if (payload.error) {
+          showMessage({
+            message: payload.error.data.message,
+            type: 'danger',
+          });
+        } else {
+          showMessage({
+            message: 'Register successful',
+            type: 'success',
+          });
+          const {_id} = payload.data.data;
+          console.log(_id);
+          dispatch(saveId(_id))
+          navigation.navigate(routes.VERIFY)
+        }
+      })
+      .catch(error =>
+        showMessage({
+          message: error.data.message,
+          type: 'danger',
+        }),
+      );
   };
 
   const onClickLogin = () => {
     navigation.goBack();
   };
-
+  const verify = () => {
+    navigation.navigate(routes.VERIFY);
+  };
   return (
     <SafeAreaView style={styles.container}>
-      {/* {false && <Loading />} */}
+      {isLoading && <Loading />}
       <KeyboardAwareScrollView>
         <View style={styles.imageContainer}>
           <CircleImage />
@@ -150,7 +190,7 @@ const Register = ({navigation}) => {
               <View style={styles.line} />
             </View>
             <View style={{marginVertical: units.height / 55}}>
-              <SocialMediaCard />
+              <SocialMediaCard onPress={verify} />
             </View>
           </View>
         </View>

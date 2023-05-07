@@ -4,9 +4,9 @@ import GoogleIcon from '../../assets/svgs/google';
 import {units} from '../../themes/Units';
 import {colors} from '../../themes/Colors';
 
-const SocialMediaCard = () => {
+const SocialMediaCard = ({onPress}) => {
   return (
-    <TouchableOpacity style={styles.container} onPress={undefined}>
+    <TouchableOpacity style={styles.container} onPress={onPress}>
       <GoogleIcon />
       <Text style={{marginLeft: units.width / 26}}>Google</Text>
     </TouchableOpacity>
