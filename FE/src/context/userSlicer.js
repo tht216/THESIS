@@ -5,6 +5,8 @@ const initialStates = {
   id: '',
   name: '',
   email: '',
+  address: '',
+  location: '',
 };
 
 export const userSlicer = createSlice({
@@ -22,12 +24,22 @@ export const userSlicer = createSlice({
         state.id = action.payload || '';
       }
     },
+    setAddress: (state, action) => {
+      if (action.payload) {
+        state.address = action.payload || '';
+      }
+    },
+    setLocation: (state, action) => {
+      if (action.payload) {
+        state.location = action.payload || '';
+      }
+    },
     logOutAccount: state => {
       state.isLogin = false;
     },
   },
 });
 
-export const {loginAccount, logOutAccount, saveId} = userSlicer.actions;
+export const {loginAccount, logOutAccount, saveId, setAddress, setLocation} = userSlicer.actions;
 
 export default userSlicer.reducer;

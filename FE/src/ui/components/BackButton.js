@@ -1,13 +1,21 @@
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import React from 'react';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {colors} from '../../themes/Colors';
 import {units} from '../../themes/Units';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const BackButton = ({onPress}) => {
   return (
-    <TouchableOpacity style={styles.container} onPress={onPress}>
-      <Icon name="chevron-left" size={28} color={colors.DARK} />
+    <TouchableOpacity
+      style={{
+        padding: 5,
+        borderRadius: 50,
+        backgroundColor: colors.WHITE,
+        elevation: 12,
+        shadowColor: '#000',
+      }}
+      onPress={onPress}>
+      <Icon name="arrow-back" size={27} color={colors.ORANGE} />
     </TouchableOpacity>
   );
 };

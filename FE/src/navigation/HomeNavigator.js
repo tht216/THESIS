@@ -1,71 +1,143 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {routes} from './routes';
-// import Favorites from '../ui/screens/Favorites';
+import {View} from 'react-native';
 import {colors} from '../themes/Colors';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-// import Retaurant from '../ui/screens/Retaurant';
-import HomeStackNavigator from './HomeStackNavigator';
-import Restaurant from '../ui/screens/Restaurant';
+import Icon from 'react-native-vector-icons/Ionicons';
+// import HomeStackNavigator from './HomeStackNavigator';
+import Account from '../ui/screens/Account';
+import History from '../ui/screens/History';
+import Home from '../ui/screens/Home';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import CurrentLocation from '../ui/screens/CurrentLocation';
+import ChooseAmount from '../ui/screens/ChooseAmount';
+import Location from '../ui/screens/Location';
+import Company from '../ui/screens/Company';
 // import MarketNavigator from './MarketNavigator';
 // import ProfileNavigator from './ProfileNavigator';
-
+const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
-
-const HomeNavigator = () => {
+const HomeNavigator = () => 
+<Stack.Navigator
+  screenOptions={{
+    contentStyle: { backgroundColor: "white" },
+  }}
+>
+  <Stack.Screen
+    name={routes.HOMETAB}
+    options={{ headerShown: false }}
+    component={HomeTabs}
+  />
+  <Stack.Screen
+    name={routes.CURRENTLOCATION}
+    options={{ headerShown: false }}
+    component={CurrentLocation}
+  />
+  <Stack.Screen
+    name={routes.AMOUNT}
+    options={{ headerShown: false }}
+    component={ChooseAmount}
+  />
+  <Stack.Screen
+    name={routes.LOCATION}
+    options={{ headerShown: false }}
+    component={Location}
+  />
+  <Stack.Screen
+    name={routes.COMPANY}
+    options={{ headerShown: false }}
+    component={Company}
+  />
+</Stack.Navigator>
+const HomeTabs = () => {
   return (
     <Tab.Navigator
-      screenOptions={{
-        tabBarShowLabel: false,
+      screenOptions={({route}) => ({
         headerShown: false,
-        tabBarActiveTintColor: colors.ORANGE,
-        tabBarInactiveTintColor: colors.DARKGRAY,
-      }}>
+        tabBarShowLabel: false,
+        tabBarStyle: {
+          marginBottom: 20,
+          borderRadius: 50,
+          marginHorizontal: 20,
+          backgroundColor: colors.ORANGE,
+          height: 70,
+        },
+      })}>
       <Tab.Screen
-        name={routes.HOMETAB}
-        component={HomeStackNavigator}
+        name={routes.HOME}
+        component={Home}
         options={{
-          tabBarIcon: ({color, size}) => (
-            <Icon name="compass" size={size} color={color} />
-          ),
+          tabBarIcon: ({color, size, focused}) =>
+            focused ? (
+              <View
+                style={{
+                  alignItems: 'center',
+                  borderRadius: 50,
+                  padding: 10,
+                  backgroundColor: colors.WHITE,
+                }}>
+                <Icon name="ios-home" color={colors.ORANGE} size={size} />
+              </View>
+            ) : (
+              <Icon
+                name="ios-home-outline"
+                color={colors.WHITE}
+                size={30}
+                strokeWidth={2}
+              />
+            ),
         }}
       />
       <Tab.Screen
-        name={routes.RESTAURANT}
-        component={Restaurant}
+        name={routes.HISTORY}
+        component={History}
         options={{
-          tabBarIcon: ({color, size}) => (
-            <Icon name="storefront" color={color} size={size} />
-          ),
-        }}
-      />
-      {/*<Tab.Screen
-        name={routes.BASKETTAB}
-        component={MarketNavigator}
-        options={{
-          tabBarIcon: ({color, size}) => (
-            <Icon name="basket" color={color} size={size} />
-          ),
+          tabBarIcon: ({color, size, focused}) =>
+            focused ? (
+              <View
+                style={{
+                  alignItems: 'center',
+                  borderRadius: 50,
+                  padding: 10,
+                  backgroundColor: colors.WHITE,
+                }}>
+                <Icon name="time" color={colors.ORANGE} size={size} />
+              </View>
+            ) : (
+              <Icon
+                name="time-outline"
+                color={colors.WHITE}
+                size={30}
+                strokeWidth={2}
+              />
+            ),
         }}
       />
       <Tab.Screen
-        name={routes.FAVORITES}
-        component={Favorites}
+        name={routes.ACCOUNT}
+        component={Account}
         options={{
-          tabBarIcon: ({color, size}) => (
-            <Icon name="heart-circle" color={color} size={size} />
-          ),
+          tabBarIcon: ({color, size, focused}) =>
+            focused ? (
+              <View
+                style={{
+                  alignItems: 'center',
+                  borderRadius: 50,
+                  padding: 10,
+                  backgroundColor: colors.WHITE,
+                }}>
+                <Icon name="person" color={colors.ORANGE} size={size} />
+              </View>
+            ) : (
+              <Icon
+                name="person-outline"
+                color={colors.WHITE}
+                size={30}
+                strokeWidth={2}
+              />
+            ),
         }}
       />
-      <Tab.Screen
-        name={routes.PROFILETAB}
-        component={ProfileNavigator}
-        options={{
-          tabBarIcon: ({color, size}) => (
-            <Icon name="account-circle" color={color} size={size} />
-          ),
-        }}
-      /> */}
     </Tab.Navigator>
   );
 };
