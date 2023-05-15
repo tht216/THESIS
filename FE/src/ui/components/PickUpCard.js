@@ -44,13 +44,13 @@ export default PickUpCard = memo(
             shadowRadius: 9.22,
             elevation: 12,
           }}>
-          <Image source={{uri: data.image}} style={styles.icon} />
+          <Image source={{uri: 'https://vcdn1-vnexpress.vnecdn.net/2022/09/16/-9660-1663317578.jpg?w=900&h=540&q=100&dpr=1&fit=crop&s=ZZ14jxe3Whlcw7PASlpBRA'}} style={styles.icon} />
         </View>
         <CustomCard elevated={true} style={styles.card}>
           <View style={styles.infoContainer}>
             <View style={styles.info}>
               <Text numberOfLines={1} style={styles.mainText}>
-                {data.companyName}
+                {data?.companyId.name}
               </Text>
               <View style={styles.infoRow}>
                 <View
@@ -67,9 +67,9 @@ export default PickUpCard = memo(
                       color: colors.BLACK,
                       marginHorizontal: 10,
                     }}>
-                    {data.collection.toLocaleUpperCase()}
+                    {data?.serviceType.toLocaleUpperCase()}
                   </Text>
-                  <StatusIndicator status={data.status.toLocaleUpperCase()} />
+                  <StatusIndicator status={data?.status.toLocaleUpperCase()} />
                 </View>
                 <View
                   style={{
@@ -107,7 +107,7 @@ export default PickUpCard = memo(
                     <Text
                       numberOfLines={1}
                       style={[styles.text, {fontWeight: 'bold'}]}>
-                      {data.amount}
+                      {data?.amount}
                     </Text>
                   </View>
                   <View style={{flex: 1, paddingHorizontal: 12}}>
@@ -115,7 +115,7 @@ export default PickUpCard = memo(
                     <Text
                       numberOfLines={1}
                       style={[styles.text, {fontWeight: 'bold'}]}>
-                      {data.price}
+                      ${data?.price}
                     </Text>
                   </View>
                 </View>

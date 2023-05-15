@@ -4,15 +4,23 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {useSelector} from 'react-redux';
 import AuthNavigator from './AuthNavigator';
 import HomeNavigator from './HomeNavigator';
+import IsCompleteNavigator from './IsCompleteNavigator';
 
 const Stack = createNativeStackNavigator();
 
 const AppNavigator = () => {
   const isLogin = useSelector(selector => selector.userReduce.isLogin);
+  const isDone = useSelector(selector => selector.pickupSlice.isDone);
 
   return (
     <NavigationContainer>
-      {isLogin ? <HomeNavigator /> : <AuthNavigator />}
+      {isDone ? (
+        <IsCompleteNavigator />
+      ) : isLogin ? (
+        <HomeNavigator />
+      ) : (
+        <AuthNavigator />
+      )}
     </NavigationContainer>
   );
 };

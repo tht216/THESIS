@@ -1,5 +1,6 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import {getToken} from './localstorage';
+import {API_URL} from './constant';
 
 export const api = createApi({
   // Tương tự tên Slice khi tạo Slice thông thường
@@ -7,7 +8,7 @@ export const api = createApi({
 
   // Cấu hình chung cho tất cả request
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://192.168.1.5:3000/api/v1',
+    baseUrl: API_URL,
 
     prepareHeaders: async headers => {
       const token = await getToken();
@@ -61,12 +62,25 @@ export const api = createApi({
       }),
     }),
     getFilterCompany: builder.query({
-      query: (patch) => ({
+      query: patch => ({
         url: `company/getFilterCompany`,
         method: 'POST',
         body: patch,
       }),
     }),
+    bookPickup: builder.mutation({
+      query: patch => ({
+        url: `pickup/book`,
+        method: 'POST',
+        body: patch,
+      }),
+    }),
+    historyPickup: builder.query({
+      query: () => ({
+        url: `pickup/getDetailCustomer`,
+        method: 'GET',
+      }),
+    })
   }),
 });
 export const {
@@ -77,4 +91,6 @@ export const {
   useGetDetailQuery,
   useGetCompanyQuery,
   useGetFilterCompanyQuery,
+  useBookPickupMutation,
+  useHistoryPickupQuery
 } = api;

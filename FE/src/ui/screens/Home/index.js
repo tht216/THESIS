@@ -19,8 +19,6 @@ import {
   setLocation,
 } from '../../../utils/userSlicer';
 import Icon from 'react-native-vector-icons/Ionicons';
-
-import HomeLoading from '../../components/HomeLoading';
 import {CustomCard} from '../../components/CustomCard';
 import {categories} from '../../../utils/constant';
 import WasteCard from '../../components/WasteCard';
@@ -39,6 +37,7 @@ import {
 } from '../../../utils/pickupSlice';
 import {getToken} from '../../../utils/localstorage';
 import {useGetDetailQuery} from '../../../utils/api';
+import {DrawerLayoutAndroid} from 'react-native';
 
 const Home = ({navigation}) => {
   const dispatch = useDispatch();
@@ -72,7 +71,7 @@ const Home = ({navigation}) => {
     //     console.warn(code, message);
     //   });
   }, []);
-  console.log(data);
+  
   const wasteItems = [
     {
       id: 1,
@@ -205,121 +204,128 @@ const Home = ({navigation}) => {
   const [activeCategory, setActiveCategory] = useState(1);
   let _carousel = null;
   return (
-    <SafeAreaView style={styles.container}>
-      {isLoading && <Loading />}
-      {/* background */}
-      <Image
-        source={require('../../../assets/images/background.png')}
-        style={styles.background}
-      />
-      {/* user bar */}
-      <View style={styles.topbar}>
-        {/* user image */}
+    
+      <SafeAreaView style={styles.container}>
+        {isLoading && <Loading />}
+        {/* background */}
         <Image
-          source={require('../../../assets/images/user.png')}
-          style={styles.image}
+          source={require('../../../assets/images/background.png')}
+          style={styles.background}
         />
-        {/* location */}
-        <TouchableOpacity
-          onPress={() => navigation.navigate(routes.CURRENTLOCATION)}
-          style={styles.mapContainer}>
-          <Icon name="ios-location" size={25} color={colors.WHITE} />
-          <Text numberOfLines={1} style={styles.mapText}>
-            {address}
-          </Text>
-        </TouchableOpacity>
-        {/* notification */}
-        <Icon name="notifications" size={27} color="white" />
-      </View>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {/* top view */}
-        <View style={styles.topview}>
-          <View style={styles.welcomecontainer}>
-            <Text style={styles.welcomemessage}>
-              {`Hello,<br/>${data?.data?.data?.name || ''}`.split('<br/>').join('\n')}
+        {/* user bar */}
+        <View style={styles.topbar}>
+          {/* user image */}
+          <Image
+            source={require('../../../assets/images/user.png')}
+            style={styles.image}
+          />
+          {/* location */}
+          <TouchableOpacity
+            onPress={() => navigation.navigate(routes.CURRENTLOCATION)}
+            style={styles.mapContainer}>
+            <Icon name="ios-location" size={25} color={colors.WHITE} />
+            <Text numberOfLines={1} style={styles.mapText}>
+              {address}
             </Text>
-          </View>
+          </TouchableOpacity>
+          {/* notification */}
+          <Icon name="notifications" size={27} color="white" />
         </View>
-
-        {/* body view */}
-        <View style={styles.bodyContainer}>
-          {/* status bar */}
-          <CustomCard
-            elevated={true}
-            style={{
-              backgroundColor: '#fff',
-              marginHorizontal: 24,
-              marginTop: -40,
-              padding: 30,
-              borderRadius: 10,
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-            }}>
-            <View style={{alignItems: 'center'}}>
-              <Text style={{fontWeight: 'bold', marginBottom: 10}}>Points</Text>
-              <Text style={{fontWeight: 'bold', fontSize: 18}}>{data?.data?.point}</Text>
-            </View>
-            <View style={{alignItems: 'center'}}>
-              <Text style={{fontWeight: 'bold', marginBottom: 10}}>
-                Total Pickup
+        <ScrollView showsVerticalScrollIndicator={false}>
+          {/* top view */}
+          <View style={styles.topview}>
+            <View style={styles.welcomecontainer}>
+              <Text style={styles.welcomemessage}>
+                {`Hello,<br/>${data?.data?.data?.name || ''}`
+                  .split('<br/>')
+                  .join('\n')}
               </Text>
-              <Text style={{fontWeight: 'bold', fontSize: 18}}>189</Text>
             </View>
-          </CustomCard>
-          {/* search bar */}
-          {/* <Text style={{color: colors.BLACK, marginVertical: 24}}>
+          </View>
+
+          {/* body view */}
+          <View style={styles.bodyContainer}>
+            {/* status bar */}
+            <CustomCard
+              elevated={true}
+              style={{
+                backgroundColor: '#fff',
+                marginHorizontal: 24,
+                marginTop: -40,
+                padding: 30,
+                borderRadius: 10,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}>
+              <View style={{alignItems: 'center'}}>
+                <Text style={{fontWeight: 'bold', marginBottom: 10}}>
+                  Points
+                </Text>
+                <Text style={{fontWeight: 'bold', fontSize: 18}}>
+                  {data?.data?.point}
+                </Text>
+              </View>
+              <View style={{alignItems: 'center'}}>
+                <Text style={{fontWeight: 'bold', marginBottom: 10}}>
+                  Total Pickup
+                </Text>
+                <Text style={{fontWeight: 'bold', fontSize: 18}}>189</Text>
+              </View>
+            </CustomCard>
+            {/* search bar */}
+            {/* <Text style={{color: colors.BLACK, marginVertical: 24}}>
             Which collection type you want to make?
           </Text>
           <SearchInput placeholder={'Search...'} /> */}
 
-          {/* categories */}
-          <View style={styles.listCategories}>
-            <FlatList
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              data={categories}
-              keyExtractor={item => item.id}
-              style={{overflow: 'hidden'}}
-              renderItem={({item}) => {
-                isActive = item.id == activeCategory;
-                return (
-                  <TouchableOpacity
-                    onPress={() => {
-                      setActiveCategory(item.id);
-                      _carousel.snapToItem(item.id - 1);
-                    }}
-                    style={styles.categoriesContainer(isActive)}>
-                    <Text style={styles.textCategories(isActive)}>
-                      {item.title}
-                    </Text>
-                  </TouchableOpacity>
-                );
-              }}
-            />
+            {/* categories */}
+            <View style={styles.listCategories}>
+              <FlatList
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                data={categories}
+                keyExtractor={item => item.id}
+                style={{overflow: 'hidden'}}
+                renderItem={({item}) => {
+                  isActive = item.id == activeCategory;
+                  return (
+                    <TouchableOpacity
+                      onPress={() => {
+                        setActiveCategory(item.id);
+                        _carousel.snapToItem(item.id - 1);
+                      }}
+                      style={styles.categoriesContainer(isActive)}>
+                      <Text style={styles.textCategories(isActive)}>
+                        {item.title}
+                      </Text>
+                    </TouchableOpacity>
+                  );
+                }}
+              />
+            </View>
+            {/* coffee cards */}
+            <View
+              style={{paddingTop: 12, paddingVertical: 4}}
+              className="mt-16 py-2">
+              <Carousel
+                ref={c => {
+                  _carousel = c;
+                }}
+                containerCustomStyle={{overflow: 'visible'}}
+                data={wasteItems}
+                renderItem={({item}) => <WasteCard item={item} />}
+                firstItem={1}
+                loop={true}
+                inactiveSlideScale={0.77}
+                inactiveSlideOpacity={0.75}
+                sliderWidth={400}
+                itemWidth={260}
+                slideStyle={{display: 'flex', alignItems: 'center'}}
+              />
+            </View>
           </View>
-          {/* coffee cards */}
-          <View
-            style={{paddingTop: 12, paddingVertical: 4}}
-            className="mt-16 py-2">
-            <Carousel
-              ref={c => {
-                _carousel = c;
-              }}
-              containerCustomStyle={{overflow: 'visible'}}
-              data={wasteItems}
-              renderItem={({item}) => <WasteCard item={item} />}
-              firstItem={1}
-              loop={true}
-              inactiveSlideScale={0.77}
-              inactiveSlideOpacity={0.75}
-              sliderWidth={400}
-              itemWidth={260}
-              slideStyle={{display: 'flex', alignItems: 'center'}}
-            />
-          </View>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+        </ScrollView>
+      </SafeAreaView>
   );
 };
 

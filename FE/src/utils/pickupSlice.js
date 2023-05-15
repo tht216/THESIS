@@ -11,6 +11,7 @@ const initialStates = {
   amount: 0,
   serviceType: '',
   subPrice: 0,
+  delivery: 0,
   isMissed: false,
 };
 
@@ -58,6 +59,11 @@ export const pickupSlice = createSlice({
         state.subPrice = action.payload || 0;
       }
     },
+    saveDelivery: (state, action) => {
+      if (action.payload) {
+        state.delivery = action.payload || 0;
+      }
+    },
 
     completePickup: state => {
       state.isDone = true;
@@ -86,7 +92,8 @@ export const {
   saveLat,
   saveLong,
   saveServiceType,
-  saveSubPrice
+  saveSubPrice,
+  saveDelivery
 } = pickupSlice.actions;
 
 export default pickupSlice.reducer;

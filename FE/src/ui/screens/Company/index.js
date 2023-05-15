@@ -15,7 +15,11 @@ import Card from '../../components/Card';
 import BackButton from '../../components/BackButton';
 import {units} from '../../../themes/Units';
 import {routes} from '../../../navigation/routes';
-import {saveCompanyId, saveSubPrice} from '../../../utils/pickupSlice';
+import {
+  saveCompanyId,
+  saveDelivery,
+  saveSubPrice,
+} from '../../../utils/pickupSlice';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   useGetCompanyMutation,
@@ -79,6 +83,7 @@ export default function Company({navigation}) {
                 rating: 4.5,
                 subPrice: value.price * amount,
                 distance: distance[index],
+                delivery: (0.01 * distance[index]).toFixed(2),
               };
             }),
           );
@@ -151,17 +156,20 @@ export default function Company({navigation}) {
   const onClickBack = () => {
     navigation.goBack();
   };
-  const renderCard = ({item}) => (
-    <Card
-      item={item}
-      onPress={() => {
-        console.log(item);
-        dispatch(saveCompanyId(item.id));
-        dispatch(saveSubPrice(item.subPrice));
-        navigation.navigate(routes.CHECKOUT, {title: item.name});
-      }}
-    />
-  );
+  const renderCard = ({item}) => {
+    return (
+      <Card
+        item={item}
+        onPress={() => {
+          console.log(item);
+          dispatch(saveCompanyId(item.id));
+          dispatch(saveSubPrice(item.subPrice));
+          dispatch(saveDelivery(item.delivery));
+          navigation.navigate(routes.CHECKOUT, {title: item.name});
+        }}
+      />
+    );
+  };
   const renderMarker = (item, index) => (
     <CustomMarker
       key={index}
@@ -232,6 +240,13 @@ export default function Company({navigation}) {
           data={markers}
           renderItem={renderCard}
         />
+        {!markers?.length && (
+          <View style={{backgroundColor: 'rgba(255,255,255,0.8)'}}>
+            <Text style={{fontWeight: 'bold'}}>
+              There has been any garbage company near you yet
+            </Text>
+          </View>
+        )}
         <TouchableOpacity
           hitSlop={styles.hitslop}
           onPress={onPressRight}
@@ -278,6 +293,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     position: 'absolute',
     bottom: 0,
+    justifyContent: 'center',
   },
   hitslop: {
     top: 30,

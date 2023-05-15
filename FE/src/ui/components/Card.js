@@ -69,6 +69,12 @@ const Card = ({item, onPress}) => (
               {item?.subPrice}{' '}
             </Text>
           </Text>
+          <Text style={styles.status} numberOfLines={2}>
+            Delivery Price:{' '}
+            <Text style={[styles.black, {fontWeight: 'bold'}]}>
+              {item?.delivery}{' '}
+            </Text>
+          </Text>
           <View style={{flex: 1}}>
             <TouchableOpacity
               onPress={onPress}

@@ -3,7 +3,7 @@ import 'react-native-gesture-handler';
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {routes} from './routes';
-import {View} from 'react-native';
+import {View, DrawerLayoutAndroid, Text} from 'react-native';
 import {colors} from '../themes/Colors';
 import Icon from 'react-native-vector-icons/Ionicons';
 // import HomeStackNavigator from './HomeStackNavigator';
@@ -62,96 +62,96 @@ const HomeNavigator = () => (
 );
 const HomeTabs = () => {
   return (
-      <Tab.Navigator
-        screenOptions={({route}) => ({
-          headerShown: false,
-          tabBarShowLabel: false,
-          tabBarStyle: {
-            marginBottom: 20,
-            borderRadius: 50,
-            marginHorizontal: 20,
-            backgroundColor: colors.ORANGE,
-            height: 70,
-          },
-        })}>
-        <Tab.Screen
-          name={routes.HOME}
-          component={Home}
-          options={{
-            tabBarIcon: ({color, size, focused}) =>
-              focused ? (
-                <View
-                  style={{
-                    alignItems: 'center',
-                    borderRadius: 50,
-                    padding: 10,
-                    backgroundColor: colors.WHITE,
-                  }}>
-                  <Icon name="ios-home" color={colors.ORANGE} size={size} />
-                </View>
-              ) : (
-                <Icon
-                  name="ios-home-outline"
-                  color={colors.WHITE}
-                  size={30}
-                  strokeWidth={2}
-                />
-              ),
-          }}
-        />
-        <Tab.Screen
-          name={routes.HISTORY}
-          component={History}
-          options={{
-            tabBarIcon: ({color, size, focused}) =>
-              focused ? (
-                <View
-                  style={{
-                    alignItems: 'center',
-                    borderRadius: 50,
-                    padding: 10,
-                    backgroundColor: colors.WHITE,
-                  }}>
-                  <Icon name="time" color={colors.ORANGE} size={size} />
-                </View>
-              ) : (
-                <Icon
-                  name="time-outline"
-                  color={colors.WHITE}
-                  size={30}
-                  strokeWidth={2}
-                />
-              ),
-          }}
-        />
-        <Tab.Screen
-          name={routes.ACCOUNT}
-          component={Account}
-          options={{
-            tabBarIcon: ({color, size, focused}) =>
-              focused ? (
-                <View
-                  style={{
-                    alignItems: 'center',
-                    borderRadius: 50,
-                    padding: 10,
-                    backgroundColor: colors.WHITE,
-                  }}>
-                  <Icon name="person" color={colors.ORANGE} size={size} />
-                </View>
-              ) : (
-                <Icon
-                  name="person-outline"
-                  color={colors.WHITE}
-                  size={30}
-                  strokeWidth={2}
-                />
-              ),
-          }}
-        />
-      </Tab.Navigator>
+    <Tab.Navigator
+      initialRouteName={routes.HOME}
+      screenOptions={({route}) => ({
+        headerShown: false,
+        tabBarShowLabel: false,
+        tabBarStyle: {
+          marginBottom: 20,
+          borderRadius: 50,
+          marginHorizontal: 20,
+          backgroundColor: colors.ORANGE,
+          height: 70,
+        },
+      })}>
+      <Tab.Screen
+        name={routes.HISTORY}
+        component={History}
+        options={{
+          tabBarIcon: ({color, size, focused}) =>
+            focused ? (
+              <View
+                style={{
+                  alignItems: 'center',
+                  borderRadius: 50,
+                  padding: 10,
+                  backgroundColor: colors.WHITE,
+                }}>
+                <Icon name="time" color={colors.ORANGE} size={size} />
+              </View>
+            ) : (
+              <Icon
+                name="time-outline"
+                color={colors.WHITE}
+                size={30}
+                strokeWidth={2}
+              />
+            ),
+        }}
+      />
+      <Tab.Screen
+        name={routes.HOME}
+        component={Home}
+        options={{
+          tabBarIcon: ({color, size, focused}) =>
+            focused ? (
+              <View
+                style={{
+                  alignItems: 'center',
+                  borderRadius: 50,
+                  padding: 10,
+                  backgroundColor: colors.WHITE,
+                }}>
+                <Icon name="ios-home" color={colors.ORANGE} size={size} />
+              </View>
+            ) : (
+              <Icon
+                name="ios-home-outline"
+                color={colors.WHITE}
+                size={30}
+                strokeWidth={2}
+              />
+            ),
+        }}
+      />
+      <Tab.Screen
+        name={routes.ACCOUNT}
+        component={Account}
+        options={{
+          tabBarIcon: ({color, size, focused}) =>
+            focused ? (
+              <View
+                style={{
+                  alignItems: 'center',
+                  borderRadius: 50,
+                  padding: 10,
+                  backgroundColor: colors.WHITE,
+                }}>
+                <Icon name="person" color={colors.ORANGE} size={size} />
+              </View>
+            ) : (
+              <Icon
+                name="person-outline"
+                color={colors.WHITE}
+                size={30}
+                strokeWidth={2}
+              />
+            ),
+        }}
+      />
+    </Tab.Navigator>
   );
 };
-
 
 export default HomeNavigator;

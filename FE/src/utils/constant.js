@@ -1,4 +1,5 @@
 export const GOONG_API_KEY = 'zGzzh9DlBQ3uiVT6Inro2wkW5nKWTSdgGKjbufkJ';
+export const API_URL = 'http://192.168.1.5:3000/api/v1';
 import { Dimensions } from "react-native";
 
 const { width } = Dimensions.get('window');

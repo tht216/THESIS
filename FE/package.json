@@ -23,7 +23,7 @@
     "formik": "^2.2.9",
     "hoist-non-react-statics": "^3.3.2",
     "lodash": "^4.17.21",
-    "lottie-react-native": "^5.1.5",
+    "lottie-react-native": "^5.1.6",
     "react": "18.2.0",
     "react-native": "0.71.7",
     "react-native-fast-image": "^8.6.3",
