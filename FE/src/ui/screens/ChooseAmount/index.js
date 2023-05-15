@@ -16,97 +16,102 @@ import {units} from '../../../themes/Units';
 import {routes} from '../../../navigation/routes';
 import CustomButton from '../../components/CustomButton';
 import BackButton from '../../components/BackButton';
+import {useDispatch, useSelector} from 'react-redux';
+import { saveAmount } from '../../../utils/pickupSlice';
 
 export default function ChooseAmount({navigation, route}) {
   const params = route.params;
   const [bag, setBag] = useState(1);
-  const DATA = [
-    {
-      id: 1,
-      departuretime: '10:00',
-      arrivaltime: '10:30',
-      name: 'Lorem MRT Station',
-      price: '5.0',
-      onPressHandler: () => {
-        navigation.navigate(routes.HOME, {price: '5.0'});
-      },
-    },
-    {
-      id: 2,
-      departuretime: '10:00',
-      arrivaltime: '10:30',
-      name: 'Dolor MRT Station',
-      price: '5.0',
-      onPressHandler: () => {
-        navigation.navigate(routes.HOME, {price: '5.0'});
-      },
-    },
-  ];
-  const CompanyItem = ({item}) => {
-    return (
-      <View
-        style={{
-          marginBottom: 10,
-          borderBottomWidth: 2,
-          //   marginHorizontal: 5,
-          borderBottomStartRadius: 30,
-          borderBottomEndRadius: 10,
-          borderBottomColor: '#EBE7E6',
-        }}>
-        <View
-          style={{
-            flexDirection: 'row',
-            marginBottom: 10,
-            justifyContent: 'space-between',
-          }}>
-          <View style={{flexDirection: 'row'}}>
-            <Icon name="timer-outline" size={15} color="#000" />
-            <Text
-              style={{fontSize: 15, fontWeight: 'bold', marginHorizontal: 10}}>
-              {item.departuretime}
-            </Text>
-            <Icon name="swap-horizontal-outline" size={15} color="#000" />
-            <Text
-              style={{fontSize: 15, fontWeight: 'bold', marginHorizontal: 10}}>
-              {item.arrivaltime}
-            </Text>
-          </View>
-          <View>
-            <Text style={{fontWeight: 'bold', marginRight: 16}}>
-              $ {item.price}
-            </Text>
-          </View>
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            marginBottom: 15,
-            justifyContent: 'space-between',
-          }}>
-          <View style={{flexDirection: 'row'}}>
-            <Icon name="location-outline" size={15} color="#000" />
-            <Text
-              style={{fontSize: 15, fontWeight: 'bold', marginHorizontal: 10}}>
-              {item.name}
-            </Text>
-          </View>
-          <View>
-            <TouchableOpacity
-              onPress={item.onPressHandler}
-              style={{
-                backgroundColor: colors.ORANGE,
-                paddingHorizontal: 8,
-                borderRadius: 5,
-              }}>
-              <Text style={{color: '#fff', fontWeight: 'bold'}}>Select</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
-    );
-  };
+  const dispatch = useDispatch();
+
+  // const DATA = [
+  //   {
+  //     id: 1,
+  //     departuretime: '10:00',
+  //     arrivaltime: '10:30',
+  //     name: 'Lorem MRT Station',
+  //     price: '5.0',
+  //     onPressHandler: () => {
+  //       navigation.navigate(routes.HOME, {price: '5.0'});
+  //     },
+  //   },
+  //   {
+  //     id: 2,
+  //     departuretime: '10:00',
+  //     arrivaltime: '10:30',
+  //     name: 'Dolor MRT Station',
+  //     price: '5.0',
+  //     onPressHandler: () => {
+  //       navigation.navigate(routes.HOME, {price: '5.0'});
+  //     },
+  //   },
+  // ];
+  // const CompanyItem = ({item}) => {
+  //   return (
+  //     <View
+  //       style={{
+  //         marginBottom: 10,
+  //         borderBottomWidth: 2,
+  //         //   marginHorizontal: 5,
+  //         borderBottomStartRadius: 30,
+  //         borderBottomEndRadius: 10,
+  //         borderBottomColor: '#EBE7E6',
+  //       }}>
+  //       <View
+  //         style={{
+  //           flexDirection: 'row',
+  //           marginBottom: 10,
+  //           justifyContent: 'space-between',
+  //         }}>
+  //         <View style={{flexDirection: 'row'}}>
+  //           <Icon name="timer-outline" size={15} color="#000" />
+  //           <Text
+  //             style={{fontSize: 15, fontWeight: 'bold', marginHorizontal: 10}}>
+  //             {item.departuretime}
+  //           </Text>
+  //           <Icon name="swap-horizontal-outline" size={15} color="#000" />
+  //           <Text
+  //             style={{fontSize: 15, fontWeight: 'bold', marginHorizontal: 10}}>
+  //             {item.arrivaltime}
+  //           </Text>
+  //         </View>
+  //         <View>
+  //           <Text style={{fontWeight: 'bold', marginRight: 16}}>
+  //             $ {item.price}
+  //           </Text>
+  //         </View>
+  //       </View>
+  //       <View
+  //         style={{
+  //           flexDirection: 'row',
+  //           marginBottom: 15,
+  //           justifyContent: 'space-between',
+  //         }}>
+  //         <View style={{flexDirection: 'row'}}>
+  //           <Icon name="location-outline" size={15} color="#000" />
+  //           <Text
+  //             style={{fontSize: 15, fontWeight: 'bold', marginHorizontal: 10}}>
+  //             {item.name}
+  //           </Text>
+  //         </View>
+  //         <View>
+  //           <TouchableOpacity
+  //             onPress={item.onPressHandler}
+  //             style={{
+  //               backgroundColor: colors.ORANGE,
+  //               paddingHorizontal: 8,
+  //               borderRadius: 5,
+  //             }}>
+  //             <Text style={{color: '#fff', fontWeight: 'bold'}}>Select</Text>
+  //           </TouchableOpacity>
+  //         </View>
+  //       </View>
+  //     </View>
+  //   );
+  // };
   const nextStep = () => {
     navigation.navigate(routes.LOCATION);
+    dispatch(saveAmount(bag))
   };
   return (
     <SafeAreaView style={styles.container}>

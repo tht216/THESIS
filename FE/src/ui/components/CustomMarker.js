@@ -10,14 +10,15 @@ const CustomMarker = memo(({index, marker, onMarkerPress}) => {
   return (
     <Marker
       key={index}
-      title={marker.title}
+      title={marker.name}
+      icon={{ uri: "https://imgur.com/scjKUVG.png" }}
       description={marker.description}
       coordinate={marker.coordinate}
       onPress={e => onMarkerPress(e)}>
 
       <Callout tooltip style={{width: 160}}>
         <View style={styles.calloutCard}>
-          <Text style={styles.name}>{marker.title}</Text>
+          <Text style={styles.name}>{marker.name}</Text>
         </View>
         <View style={styles.triangle} />
       </Callout>

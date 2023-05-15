@@ -1,11 +1,17 @@
 import React, {memo} from 'react';
 import {Rating} from 'react-native-ratings';
 import FastImage from 'react-native-fast-image';
-import {StyleSheet, Text, View} from 'react-native';
-import { INNER_CARD_HEIGHT, INNER_CARD_WIDTH, OUTER_CARD_HEIGHT, OUTER_CARD_WIDTH } from '../../utils/constant';
-
-
-const Card = ({item}) => (
+import {
+  StyleSheet,
+  Text,
+  Touchable,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {INNER_CARD_WIDTH, OUTER_CARD_WIDTH} from '../../utils/constant';
+import {colors} from '../../themes/Colors';
+//({item?.totalRatings || 0} Ratings)
+const Card = ({item, onPress}) => (
   <View style={styles.outerCard}>
     <View style={styles.innerCard}>
       {item?.image == 'NA' ? (
@@ -26,10 +32,15 @@ const Card = ({item}) => (
       <View style={styles.right}>
         <View style={styles.top}>
           <Text numberOfLines={2} style={styles.name}>
-            {item?.title}
+            Choose Company
           </Text>
         </View>
         <View style={styles.bottom}>
+          <Text
+            numberOfLines={2}
+            style={[styles.status, {fontWeight: '600', fontSize: 14}]}>
+            {item?.name}
+          </Text>
           <View style={styles.rating}>
             <Rating
               ratingCount={5}
@@ -39,18 +50,38 @@ const Card = ({item}) => (
               imageSize={14}
             />
             <Text style={styles.ratingTxt}>
-              {item?.rating || 0} ({item?.totalRatings || 0} Ratings)
+              {item?.rating || 0} 
             </Text>
           </View>
+
           <Text numberOfLines={2} style={styles.status}>
             Description: <Text style={styles.black}>{item?.description}</Text>
           </Text>
           <Text style={styles.status} numberOfLines={1}>
-            Phone No: <Text style={styles.black}>{item?.phoneNo}</Text>
+            Phone No: <Text style={styles.black}>{item?.phone}</Text>
           </Text>
           <Text style={styles.status} numberOfLines={2}>
             Address: <Text style={styles.black}>{item?.address} </Text>
           </Text>
+          <Text style={styles.status} numberOfLines={2}>
+            SubPrice:{' '}
+            <Text style={[styles.black, {fontWeight: 'bold'}]}>
+              {item?.subPrice}{' '}
+            </Text>
+          </Text>
+          <View style={{flex: 1}}>
+            <TouchableOpacity
+              onPress={onPress}
+              style={{
+                backgroundColor: colors.ORANGE,
+                marginVertical: 12,
+                paddingVertical: 4,
+                paddingHorizontal: 24,
+                borderRadius: 50,
+              }}>
+              <Text style={{color: colors.WHITE}}>Select</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </View>
@@ -60,7 +91,7 @@ const Card = ({item}) => (
 const styles = StyleSheet.create({
   outerCard: {
     flex: 1,
-    height: OUTER_CARD_HEIGHT,
+    height: 250,
     width: OUTER_CARD_WIDTH,
     paddingHorizontal: 10,
     justifyContent: 'center',
@@ -77,7 +108,7 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     shadowOpacity: 0.3,
     shadowOffset: {x: 2, y: -2},
-    height: INNER_CARD_HEIGHT,
+    height: 240,
     width: INNER_CARD_WIDTH,
     overflow: 'hidden',
     elevation: 6,
@@ -90,7 +121,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgb(200,200,200)',
-    borderRadius: 5
+    borderRadius: 5,
   },
   noTxt: {
     fontFamily: 'Montserrat-SemiBold',
@@ -103,7 +134,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: '#E5E5E5',
   },
-  name: {fontFamily: 'Montserrat-SemiBold', fontSize: 14.5},
+  name: {fontFamily: 'Montserrat-SemiBold', fontSize: 16, fontWeight: 'bold'},
   bottom: {flex: 1, alignItems: 'flex-start'},
   rating: {
     flexDirection: 'row',
@@ -120,7 +151,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat-Medium',
     fontSize: 11,
     color: 'grey',
-    marginVertical:1
+    marginVertical: 1,
   },
   black: {color: 'black'},
 });

@@ -22,6 +22,10 @@ export const goongApi = createApi({
     getPlaceDetailById: builder.mutation({
       query: id => `/Place/Detail?place_id=${id}&api_key=${GOONG_API_KEY}`,
     }),
+    distanceMatrix: builder.mutation({
+      query: ({origins, destinations}) =>
+        `/DistanceMatrix?origins=${origins}&destinations=${destinations}&vehicle=car&api_key=${GOONG_API_KEY}`,
+    }),
   }),
 });
 
@@ -29,4 +33,5 @@ export const {
   useSearchLocationMutation,
   useGeocodeLocationMutation,
   useGetPlaceDetailByIdMutation,
+  useDistanceMatrixMutation,
 } = goongApi;

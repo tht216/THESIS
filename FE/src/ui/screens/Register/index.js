@@ -22,7 +22,7 @@ import {useRegisterMutation} from '../../../utils/api';
 import {showMessage} from 'react-native-flash-message';
 import {useDispatch} from 'react-redux';
 import Loading from '../../components/Loading';
-import { saveId } from '../../../context/userSlicer';
+import { saveId } from '../../../utils/userSlicer';
 
 const Register = ({navigation}) => {
   const [register, {isLoading, data, error}] = useRegisterMutation();

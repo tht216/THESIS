@@ -8,21 +8,23 @@ import {Map} from '../../components/Maps';
 import BackButton from '../../components/BackButton';
 import CustomButton from '../../components/CustomButton';
 import {routes} from '../../../navigation/routes';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useGetPlaceDetailByIdMutation} from '../../../utils/goongapi';
-import {setLocation} from '../../../context/userSlicer';
+import {setLocation} from '../../../utils/userSlicer';
 import Loading from '../../components/Loading';
+import {saveAddress, saveLat, saveLong} from '../../../utils/pickupSlice';
 export default function Location({navigation}) {
+  
   const [loading, setLoading] = useState(false);
   const location = useSelector(selector => selector.userReduce.location);
   const [getPlaceDetailById] = useGetPlaceDetailByIdMutation();
   const dispatch = useDispatch();
-  const origin = location.split(', ');
+  
   const onClickBack = () => {
     navigation.goBack();
   };
   const nextStep = () => {
     navigation.navigate(routes.COMPANY);
+    dispatch(saveAddress());
   };
   return (
     <SafeAreaView style={styles.container}>
@@ -51,12 +53,15 @@ export default function Location({navigation}) {
             }}
             placeholder="Where from?"
             onPress={place => {
+              dispatch(saveAddress(place.placeName));
               setLoading(true),
                 getPlaceDetailById(place.id)
                   .unwrap()
                   .then(payload => {
                     const locations = payload.result.geometry.location;
                     dispatch(setLocation(`${locations.lat}, ${locations.lng}`));
+                    dispatch(saveLong(locations.lng));
+                    dispatch(saveLat(locations.lat));
                     setLoading(false);
                   })
                   .catch(error => {

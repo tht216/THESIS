@@ -10,6 +10,7 @@ export const routes = {
     LOCATION: 'LocationScreen',
     CURRENTLOCATION: 'CurrentLocationScreen',
     COMPANY: 'CompanyScreen',
+    CHECKOUT: 'CheckOutScreen',
     SPLASH: 'SplashScreen',
     REGISTER: 'RegisterScreen',
     HOMETAB: 'HomeTabScreen',

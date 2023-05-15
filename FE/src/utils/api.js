@@ -1,5 +1,5 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
-import {getStorage} from './localstorage';
+import {getToken} from './localstorage';
 
 export const api = createApi({
   // Tương tự tên Slice khi tạo Slice thông thường
@@ -7,10 +7,10 @@ export const api = createApi({
 
   // Cấu hình chung cho tất cả request
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://192.168.1.7:3000/api/v1',
+    baseUrl: 'http://192.168.1.5:3000/api/v1',
 
-    prepareHeaders: headers => {
-      const token = getStorage('token');
+    prepareHeaders: async headers => {
+      const token = await getToken();
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
       }
@@ -48,6 +48,33 @@ export const api = createApi({
         body: patch,
       }),
     }),
+    getDetail: builder.query({
+      query: () => ({
+        url: `customer/detail`,
+        method: 'GET',
+      }),
+    }),
+    getCompany: builder.query({
+      query: () => ({
+        url: `company/getAllCompany`,
+        method: 'GET',
+      }),
+    }),
+    getFilterCompany: builder.query({
+      query: (patch) => ({
+        url: `company/getFilterCompany`,
+        method: 'POST',
+        body: patch,
+      }),
+    }),
   }),
 });
-export const {useLoginMutation, useRegisterMutation, useResendMutation, useVerifyAccountMutation} = api;
+export const {
+  useLoginMutation,
+  useRegisterMutation,
+  useResendMutation,
+  useVerifyAccountMutation,
+  useGetDetailQuery,
+  useGetCompanyQuery,
+  useGetFilterCompanyQuery,
+} = api;

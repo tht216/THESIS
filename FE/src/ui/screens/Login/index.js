@@ -16,8 +16,8 @@ import {useLoginMutation} from '../../../utils/api';
 import {useDispatch} from 'react-redux';
 import {showMessage} from 'react-native-flash-message';
 import Loading from '../../components/Loading';
-import {loginAccount, saveId} from '../../../context/userSlicer';
-import {saveStorage} from '../../../utils/localstorage';
+import {loginAccount, saveId} from '../../../utils/userSlicer';
+import {saveToken} from '../../../utils/localstorage';
 
 const Login = ({navigation}) => {
   const [login, {isLoading}] = useLoginMutation();
@@ -38,12 +38,11 @@ const Login = ({navigation}) => {
     await login(values)
       .unwrap()
       .then(payload => {
-        saveStorage('token', payload.token);
+        saveToken(payload.token);
         showMessage({
           message: 'Login successful',
           type: 'success',
         });
-        console.log(payload);
         dispatch(loginAccount(payload.name));
       })
       .catch(error => {

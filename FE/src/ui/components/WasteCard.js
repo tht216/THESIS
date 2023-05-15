@@ -9,7 +9,7 @@ import React from 'react';
 import {colors} from '../../themes/Colors';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {BoxShadow} from 'react-native-shadow';
-export default function CoffeeCard({item}) {
+export default function WasteCard({item}) {
   return (
     <View
       style={{

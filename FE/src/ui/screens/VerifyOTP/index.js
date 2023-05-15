@@ -18,8 +18,8 @@ import {
 import {useSelector, useDispatch} from 'react-redux';
 import {showMessage} from 'react-native-flash-message';
 import Loading from '../../components/Loading';
-import { saveStorage } from '../../../utils/localstorage';
-import { loginAccount } from '../../../context/userSlicer';
+import { saveToken } from '../../../utils/localstorage';
+import { loginAccount } from '../../../utils/userSlicer';
 
 export default VerifyOTP = ({navigation}) => {
   const [code, setCode] = useState();
@@ -53,8 +53,7 @@ export default VerifyOTP = ({navigation}) => {
     verifyAccount({id, otp: code})
       .unwrap()
       .then(payload => {
-        console.log(payload)
-        saveStorage('token', payload.token);
+        saveToken(payload.token);
         showMessage({
           message: 'Verify successfull!',
           type: 'success',
@@ -63,10 +62,10 @@ export default VerifyOTP = ({navigation}) => {
       })
       .catch(error => {
         console.log(error);
-        showMessage({
-          message: error.data.message,
-          type: 'danger',
-        });
+        // showMessage({
+        //   message: error.data.message,
+        //   type: 'danger',
+        // });
       });
   };
   const onClickLogin = () => {
