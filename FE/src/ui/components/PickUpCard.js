@@ -64,7 +64,7 @@ export default PickUpCard = memo(
                     numberOfLines={1}
                     style={{
                       fontSize: 16,
-                      color: colors.BLACK,
+                      color: colors.WHITE,
                       marginHorizontal: 10,
                     }}>
                     {data?.serviceType.toLocaleUpperCase()}
@@ -83,9 +83,9 @@ export default PickUpCard = memo(
                     readonly={true}
                     startingValue={data?.star || 0}
                     imageSize={16}
-                    ratingColor={colors.BLACK}
-                    tintColor={colors.WHITE}
-                    ratingBackgroundColor="transparent"
+                    ratingColor={colors.WHITE}
+                    tintColor={colors.DARKORANGE}
+                    ratingBackgroundColor={colors.DARKGRAY}
                     style={{backgroundColor: 'transparent'}}
                   />
                   <Text style={styles.ratingTxt}>{data?.star || 0}</Text>
@@ -101,7 +101,7 @@ export default PickUpCard = memo(
                     style={{
                       flex: 1,
                       borderRightWidth: 1,
-                      borderColor: 'black',
+                      borderColor: colors.WHITE,
                     }}>
                     <Text style={styles.text}>Amount</Text>
                     <Text
@@ -133,7 +133,7 @@ export default PickUpCard = memo(
 const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
-    backgroundColor: colors.WHITE,
+    backgroundColor: colors.DARKORANGE,
     marginLeft: 24,
     padding: 12,
     paddingLeft: 100,
@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
     paddingRight: 10,
   },
   text: {
-    color: colors.BLACK,
+    color: colors.WHITE,
     fontSize: 16,
     marginVertical: 5,
   },
@@ -164,13 +164,13 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   mainText: {
-    color: colors.BLACK,
+    color: colors.WHITE,
     fontSize: 20,
     marginHorizontal: 10,
     fontWeight: 'bold',
   },
   subText: {
-    color: 'black',
+    color: colors.WHITE,
     fontWeight: '800',
     fontSize: 16,
     marginHorizontal: 10,
@@ -178,9 +178,9 @@ const styles = StyleSheet.create({
   ratingTxt: {
     fontSize: 15,
     marginLeft: 5,
-    color: 'black',
+    color: colors.WHITE,
     fontWeight: 'bold',
   },
   viewContainer: {justifyContent: 'center', marginHorizontal: 5},
-  viewText: {color: colors.BLACK, fontSize: 22, fontWeight: 'bold'},
+  viewText: {color: colors.WHITE, fontSize: 22, fontWeight: 'bold'},
 });

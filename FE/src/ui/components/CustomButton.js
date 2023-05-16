@@ -3,9 +3,9 @@ import React from 'react';
 import {colors} from '../../themes/Colors';
 import {units} from '../../themes/Units';
 
-const CustomButton = ({title, onPress}) => {
+const CustomButton = ({title, onPress, style}) => {
   return (
-    <TouchableOpacity onPress={onPress} style={styles.container}>
+    <TouchableOpacity onPress={onPress} style={[styles.container, style]}>
       <Text style={styles.title}>{title}</Text>
     </TouchableOpacity>
   );

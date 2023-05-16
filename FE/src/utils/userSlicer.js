@@ -3,7 +3,7 @@ import {createSlice} from '@reduxjs/toolkit';
 const initialStates = {
   isLogin: false,
   id: '',
-  name: '',
+  isCompany: false,
   email: '',
   address: '',
   location: '',
@@ -15,8 +15,8 @@ export const userSlicer = createSlice({
   reducers: {
     loginAccount: (state, action) => {
       state.isLogin = true;
-      if (action.payload) {
-        state.name = action.payload || '';
+      if (action.payload === "company") {
+        state.isCompany = true;
       }
     },
     saveId: (state, action) => {

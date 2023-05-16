@@ -20,7 +20,7 @@ import {
 } from '../../../utils/userSlicer';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {CustomCard} from '../../components/CustomCard';
-import {API_URL, categories} from '../../../utils/constant';
+import {categories} from '../../../utils/constant';
 import WasteCard from '../../components/WasteCard';
 import Carousel from 'react-native-snap-carousel';
 import GetLocation from 'react-native-get-location';
@@ -38,17 +38,13 @@ import {
 import {getToken} from '../../../utils/localstorage';
 import {useGetDetailQuery} from '../../../utils/api';
 import {DrawerLayoutAndroid} from 'react-native';
-import io from 'socket.io-client';
 
-const Home = ({navigation}) => {
+const HomeCompany = ({navigation}) => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const address = useSelector(selector => selector.userReduce.address);
   const [geocodeLocation] = useGeocodeLocationMutation();
   const {isLoading, data, error} = useGetDetailQuery();
-
-  const socket = io('http://192.168.1.5:3000');
-
   useEffect(() => {
     // GetLocation.getCurrentPosition({
     //   enableHighAccuracy: true,
@@ -74,141 +70,11 @@ const Home = ({navigation}) => {
     //     const {code, message} = error;
     //     console.warn(code, message);
     //   });
-    socket.on('connect', () => {
-      console.log('Connected to server');
-    });
   }, []);
 
-  const wasteItems = [
-    {
-      id: 1,
-      name: 'Organic',
-      label: 'organic',
-      image: require('../../../assets/images/organic.png'),
-      desc: 'Food scraps, yard waste, and other biodegradable materials.',
-      onPress: () => {
-        navigation.navigate(routes.AMOUNT, {
-          name: 'Organic',
-          label: 'non-recycle',
-          image: require('../../../assets/images/organic.png'),
-          maximum: '2kg',
-          desc: 'Food scraps, yard waste, and other biodegradable materials.',
-        });
-        dispatch(saveServiceType('Organic'));
-      },
-    },
-
-    {
-      id: 2,
-      name: 'Plastic',
-      label: 'recycle',
-      image: require('../../../assets/images/plastic.png'),
-      desc: 'This includes any discarded plastic material, such as bags, bottles, and packaging. Plastic waste is a major environmental concern because it can take hundreds of years to decompose and can harm wildlife.',
-      onPress: () => {
-        navigation.navigate(routes.AMOUNT, {
-          name: 'Plastic',
-          label: 'recycle',
-          image: require('../../../assets/images/plastic.png'),
-          maximum: '2kg',
-          desc: 'This includes any discarded plastic material, such as bags, bottles, and packaging. Plastic waste is a major environmental concern because it can take hundreds of years to decompose and can harm wildlife.',
-        });
-        dispatch(saveServiceType('Plastic'));
-      },
-    },
-
-    {
-      id: 3,
-      name: 'Paper',
-      label: 'recycle',
-      image: require('../../../assets/images/paper.png'),
-      desc: 'This includes any discarded paper material, such as newspapers, magazines, and cardboard boxes. Paper waste can also be recycled and reused, which helps to conserve natural resources and reduce landfill space.',
-      onPress: () => {
-        navigation.navigate(routes.AMOUNT, {
-          name: 'Paper',
-          label: 'recycle',
-          image: require('../../../assets/images/paper.png'),
-          maximum: '2kg',
-          desc: 'This includes any discarded paper material, such as newspapers, magazines, and cardboard boxes. Paper waste can also be recycled and reused, which helps to conserve natural resources and reduce landfill space.',
-        });
-        dispatch(saveServiceType('Paper'));
-      },
-    },
-
-    {
-      id: 4,
-      name: 'Metal',
-      label: 'recycle',
-      image: require('../../../assets/images/metal.png'),
-      desc: 'This includes any discarded metal object, such as aluminum cans, steel scrap, and appliances. Metal waste can be recycled and reused, which is beneficial for the environment and can save energy.',
-      onPress: () => {
-        navigation.navigate(routes.AMOUNT, {
-          name: 'Metal',
-          label: 'recycle',
-          image: require('../../../assets/images/metal.png'),
-          maximum: '2kg',
-          desc: 'This includes any discarded metal object, such as aluminum cans, steel scrap, and appliances. Metal waste can be recycled and reused, which is beneficial for the environment and can save energy.',
-        });
-        dispatch(saveServiceType('Metal'));
-      },
-    },
-
-    {
-      id: 5,
-      name: 'Glass',
-      label: 'recycle',
-      image: require('../../../assets/images/glass.png'),
-      desc: 'This includes any discarded glass material, such as bottles and jars. Glass waste can also be recycled and reused, which is beneficial for the environment and can save energy.',
-      onPress: () => {
-        navigation.navigate(routes.AMOUNT, {
-          name: 'Glass',
-          label: 'recycle',
-          image: require('../../../assets/images/glass.png'),
-          maximum: '2kg',
-          desc: 'This includes any discarded glass material, such as bottles and jars. Glass waste can also be recycled and reused, which is beneficial for the environment and can save energy.',
-        });
-        dispatch(saveServiceType('Glass'));
-      },
-    },
-
-    {
-      id: 6,
-      name: 'E-waste',
-      label: 'e-waste',
-      image: require('../../../assets/images/e-waste.png'),
-      desc: 'Electronic waste, such as computers, televisions, and cell phones.',
-      onPress: () => {
-        navigation.navigate(routes.AMOUNT, {
-          name: 'E-waste',
-          label: 'e-waste',
-          image: require('../../../assets/images/e-waste.png'),
-          maximum: '2kg',
-          desc: 'Electronic waste, such as computers, televisions, and cell phones.',
-        });
-        dispatch(saveServiceType('E-waste'));
-      },
-    },
-    {
-      id: 7,
-      name: 'Hazardous',
-      label: 'hazardous',
-      image: require('../../../assets/images/harzadous.png'),
-      desc: 'Products that are potentially dangerous to human health or the environment, such as batteries, cleaning agents, and pesticides.',
-      onPress: () => {
-        navigation.navigate(routes.AMOUNT, {
-          name: 'Hazardous',
-          label: 'hazardous',
-          image: require('../../../assets/images/harzadous.png'),
-          maximum: '2kg',
-          desc: 'Products that are potentially dangerous to human health or the environment, such as batteries, cleaning agents, and pesticides.',
-        });
-        dispatch(saveServiceType('Hazardous'));
-      },
-    },
-  ];
   const onClickMenu = () => {
     dispatch(logOutAccount());
   };
-  const [activeCategory, setActiveCategory] = useState(1);
   let _carousel = null;
   return (
     <SafeAreaView style={styles.container}>
@@ -290,57 +156,15 @@ const Home = ({navigation}) => {
           <SearchInput placeholder={'Search...'} /> */}
 
           {/* categories */}
-          <View style={styles.listCategories}>
-            <FlatList
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              data={categories}
-              keyExtractor={item => item.id}
-              style={{overflow: 'hidden'}}
-              renderItem={({item}) => {
-                isActive = item.id == activeCategory;
-                return (
-                  <TouchableOpacity
-                    onPress={() => {
-                      setActiveCategory(item.id);
-                      _carousel.snapToItem(item.id - 1);
-                    }}
-                    style={styles.categoriesContainer(isActive)}>
-                    <Text style={styles.textCategories(isActive)}>
-                      {item.title}
-                    </Text>
-                  </TouchableOpacity>
-                );
-              }}
-            />
-          </View>
+
           {/* coffee cards */}
-          <View
-            style={{paddingTop: 12, paddingVertical: 4}}
-            className="mt-16 py-2">
-            <Carousel
-              ref={c => {
-                _carousel = c;
-              }}
-              containerCustomStyle={{overflow: 'visible'}}
-              data={wasteItems}
-              renderItem={({item}) => <WasteCard item={item} />}
-              firstItem={1}
-              loop={true}
-              inactiveSlideScale={0.77}
-              inactiveSlideOpacity={0.75}
-              sliderWidth={400}
-              itemWidth={260}
-              slideStyle={{display: 'flex', alignItems: 'center'}}
-            />
-          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
   );
 };
 
-export default Home;
+export default HomeCompany;
 
 const styles = StyleSheet.create({
   container: {

@@ -43,7 +43,8 @@ const Login = ({navigation}) => {
           message: 'Login successful',
           type: 'success',
         });
-        dispatch(loginAccount(payload.name));
+        if(payload.role)
+        dispatch(loginAccount(payload.role));
       })
       .catch(error => {
         if(error.status === 403){
