@@ -21,14 +21,3 @@ const BackButton = ({onPress}) => {
 };
 
 export default BackButton;
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: colors.WHITE,
-    borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: units.width / 37,
-    paddingVertical: units.height / 81,
-  },
-});

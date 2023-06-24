@@ -7,14 +7,14 @@ const catchError = (err, req, res, next) => {
     const errors = err.errors;
     const keys = Object.keys(errors); // keys là 1 mảng có ['title']
     const errorObj = {}; // tạo obj rỗng
-    keys.map((key) => {
-      errorObj[key] = errors[key].message;
+    keys.map((key, index) => {
+      errorObj[index] = errors[key].message;
       if (errors[key].kind === "enum") {
-        errorObj[key] = "Invalid enum";
+        errorObj[index] = "Invalid enum";
       }
     });
     err.statusCode = 400;
-    err.message = errorObj;
+    err.message = errorObj[0];
   } // lỗi bad object id
   if (err.kind === "ObjectId") {
     err.statusCode = 400;
@@ -30,11 +30,13 @@ const catchError = (err, req, res, next) => {
       Object.keys(err.keyPattern).join(" and ")
     } has been registered`;
   } // format in ra lỗi : dạng object
+  
   res.status(err.statusCode || 500).json({
     // 500 là lỗi liên quan đến server
     success: false,
     statusCode: err.statusCode || 500,
     message: err.message || "Internal Error", // lỗi ko xác định được => in ra internal error
   });
+  
 };
 module.exports = catchError;

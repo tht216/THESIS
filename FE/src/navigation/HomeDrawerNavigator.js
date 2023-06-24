@@ -12,6 +12,7 @@ import {units} from '../themes/Units';
 import CustomButton from '../ui/components/CustomButton';
 import {useDispatch} from 'react-redux';
 import {logOutAccount} from '../utils/userSlicer';
+import InformationNavigator from './InformationNavigator';
 
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
@@ -136,8 +137,8 @@ export default HomeTabs = () => {
         }}
       />
       <Tab.Screen
-        name={routes.ACCOUNT}
-        component={Account}
+        name={routes.INFORMATION}
+        component={InformationNavigator}
         options={{
           tabBarIcon: ({color, size, focused}) =>
             focused ? (

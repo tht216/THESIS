@@ -4,17 +4,19 @@ const { jwtAuth } = require("../middleware/jwtAuth");
 const { authorize } = require("../middleware/authorize");
 const router = express.Router();
 
+router.post("/", jwtAuth, authorize("admin"), companyController.getAllCompany);
+router.post("/getFilterCompany", jwtAuth, companyController.getFilterCompany);
 router.get(
-  "/getAllCompany",
+  "/detail",
   jwtAuth,
-  authorize("admin"),
-  companyController.getAllCompany
+  authorize("company"),
+  companyController.getCompanyDetails
 );
 router.get(
-  "/getCompanyDetail/:id",
+  "/detail/:id",
   jwtAuth,
   authorize("admin"),
-  companyController.getCompany
+  companyController.getCompanyDetailByAdmin
 );
 router.post(
   "/create",
@@ -29,9 +31,15 @@ router.delete(
   companyController.deleteCompany
 );
 router.patch(
+  "/",
+  jwtAuth,
+  authorize("company"),
+  companyController.updateCompany
+);
+router.patch(
   "/:id",
   jwtAuth,
   authorize("admin"),
-  companyController.updateCompany
+  companyController.updateCompanyByAdmin
 );
 module.exports = router;

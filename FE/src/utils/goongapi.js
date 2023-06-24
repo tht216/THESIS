@@ -26,6 +26,10 @@ export const goongApi = createApi({
       query: ({origins, destinations}) =>
         `/DistanceMatrix?origins=${origins}&destinations=${destinations}&vehicle=car&api_key=${GOONG_API_KEY}`,
     }),
+    direction: builder.mutation({
+      query: ({origin, destination}) =>
+        `/Direction?origin=${origin}&destination=${destination}&vehicle=car&api_key=${GOONG_API_KEY}`,
+    }),
   }),
 });
 
@@ -34,4 +38,5 @@ export const {
   useGeocodeLocationMutation,
   useGetPlaceDetailByIdMutation,
   useDistanceMatrixMutation,
+  useDirectionMutation
 } = goongApi;

@@ -1,0 +1,24 @@
+const COMPANY = "COMPANY";
+
+const GET_ALL_COMPANY = `${COMPANY}/getAll`;
+const CREATE_COMPANY = `${COMPANY}/create`;
+const SAVE_ALL_COMPANY = `${COMPANY}/saveAll`;
+const SAVE_TOTAL = `${COMPANY}/saveTotalPage`;
+const SAVE_DETAIL = `${COMPANY}/saveDetail`;
+const SET_LOADING_STEP = `${COMPANY}/setLoadingStep`;
+const DELETE_COMPANY = `${COMPANY}/delete`;
+const EDIT_COMPANY = `${COMPANY}/edit`;
+const GET_DETAIL_COMPANY = `${COMPANY}/getDetail`;
+
+export {
+  COMPANY,
+  GET_ALL_COMPANY,
+  SAVE_ALL_COMPANY,
+  SET_LOADING_STEP,
+  SAVE_TOTAL,
+  CREATE_COMPANY,
+  DELETE_COMPANY,
+  SAVE_DETAIL,
+  EDIT_COMPANY,
+  GET_DETAIL_COMPANY,
+};

@@ -5,6 +5,8 @@ import {routes} from './routes';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import HomeDrawerNavigator from './HomeDrawerNavigator';
 import HomeCompanyDrawerNavigator from './HomeCompanyDrawerNavigator';
+import Notification from '../ui/screens/Notification';
+import PendingPickup from '../ui/screens/PendingPickup';
 // import MarketNavigator from './MarketNavigator';
 // import ProfileNavigator from './ProfileNavigator';
 const Stack = createNativeStackNavigator();
@@ -18,6 +20,11 @@ const HomeCompanyNavigator = () => (
       name={routes.HOMETABCOMPANY}
       options={{headerShown: false}}
       component={HomeCompanyDrawerNavigator}
+    />
+    <Stack.Screen
+      name={routes.PENDING}
+      options={{headerShown: false}}
+      component={PendingPickup}
     />
     {/* <Stack.Screen
       name={routes.CURRENTLOCATION}

@@ -5,7 +5,7 @@ const OTPSchema = new Schema(
   {
     accountId: {
       type: Schema.Types.ObjectId,
-      ref: "account",
+      ref: "Account",
     },
     otp: {
       type: String,

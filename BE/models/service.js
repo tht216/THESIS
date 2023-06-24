@@ -1,22 +1,21 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const bcrypt = require("bcryptjs");
+const { SERVICE } = require("../constant");
 const ServiceSchema = new Schema(
   {
     companyID: {
       type: Schema.Types.ObjectId,
-      ref: "company",
-      index: true,
-      required: [true, "Company is required"]
+      ref: "Company",
+      required: [true, "Company is required"],
     },
-    serviceType: { type: String, required: [true, "Name is required"], index: true },
-    date: {
-      type: Date,
-      required: [true, "Date is required"],
+    serviceType: {
+      type: String,
+      enum: SERVICE,
+      required: [true, "Service Type is required"],
     },
     requirement: {
       type: String,
-      required: [true, "Requirement is required"],
     },
     price: {
       type: Number,
@@ -29,5 +28,5 @@ const ServiceSchema = new Schema(
   }
 );
 mongoose.set("runValidators", true);
-ServiceSchema.index({ companyID: 1, serviceType: -1 }, { unique: true });
+ServiceSchema.index({ companyID: 1, serviceType: 1 }, { unique: true });
 module.exports = mongoose.model("Service", ServiceSchema);

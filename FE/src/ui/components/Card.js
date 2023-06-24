@@ -50,7 +50,7 @@ const Card = ({item, onPress}) => (
               imageSize={14}
             />
             <Text style={styles.ratingTxt}>
-              {item?.rating || 0} 
+              {item?.rating || 0} ({item?.totalRatings || 0} Ratings)
             </Text>
           </View>
 
@@ -97,7 +97,7 @@ const Card = ({item, onPress}) => (
 const styles = StyleSheet.create({
   outerCard: {
     flex: 1,
-    height: 250,
+    height: 270,
     width: OUTER_CARD_WIDTH,
     paddingHorizontal: 10,
     justifyContent: 'center',
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     shadowOpacity: 0.3,
     shadowOffset: {x: 2, y: -2},
-    height: 240,
+    height: 260,
     width: INNER_CARD_WIDTH,
     overflow: 'hidden',
     elevation: 6,

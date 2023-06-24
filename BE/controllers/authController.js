@@ -12,6 +12,7 @@ const Otp = require("../models/OTP");
 const otpGenerator = require("otp-generator");
 
 const { findByIdAndUpdate } = require("../models/timeAccess");
+const notification = require("../models/notification");
 
 exports.register = catchAsync(async (req, res) => {
   const { name, email, phone, password } = req.body;
@@ -27,11 +28,12 @@ exports.register = catchAsync(async (req, res) => {
     digits: true,
     lowerCaseAlphabets: false,
   });
+  await Customer.create({ _id: account._id });
+  await notification.create({ accountId: account._id });
   await Otp.create({
     accountId: account._id,
     otp: otpcode,
   });
-  console.log(otpcode);
   await EmailService.sendMail(
     process.env.EMAIL,
     `${account.email}`,
@@ -58,21 +60,31 @@ exports.verifyOTP = catchAsync(async (req, res) => {
     } else {
       // same
       await Account.findByIdAndUpdate(id, { isActive: true });
+      const account = await Account.findById(id);
       await checkOtp.remove();
-      res.status(200).json({
+
+      const token = jwt.sign(
+        {
+          email: account.email,
+          name: account.name,
+          role: account.role,
+          id: account._id,
+        },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: "3h",
+        }
+      );
+      res.json({
         success: true,
-        message: "Verify successfully !",
+        message: "Verify successful!",
+        token,
       });
-      const isPoint = await Customer.findOne({ accountId: id });
-      if (!isPoint) {
-        await Customer.create({ _id: id });
-      }
     }
   }
 });
 exports.login = catchAsync(async (req, res) => {
   const { email, password } = req.body;
-  console.log(req);
   const existEmail = await Account.findOne({ email });
   if (!existEmail) {
     throw new ApiError(400, "Email or password is incorrect");
@@ -115,10 +127,10 @@ exports.login = catchAsync(async (req, res) => {
             expiresIn: "1h",
           }
         );
-          console.log(token)
         res.json({
           success: true,
           token,
+          role: existEmail.role,
         });
       } else {
         throw new ApiError(400, "Account is disabled for a while");
@@ -126,7 +138,6 @@ exports.login = catchAsync(async (req, res) => {
     }
   } else {
     const isOtp = await Otp.findOne({ accountId: existEmail._id });
-    console.log(isOtp);
     if (!isOtp) {
       var otpcode = otpGenerator.generate(6, {
         upperCaseAlphabets: false,
@@ -146,9 +157,9 @@ exports.login = catchAsync(async (req, res) => {
         `Your OTP code: ${otpcode}`
       );
 
-      res.status(200).json({
-        success: true,
-        message: "Check your mail for OTP code",
+      res.status(403).json({
+        success: false,
+        message: "Please verify your account!",
         customerId: existEmail,
       });
     } else {
@@ -170,15 +181,42 @@ exports.login = catchAsync(async (req, res) => {
         "OTP VERIFICATION",
         `Your OTP code: ${otpcode}`
       );
-      res.status(200).json({
-        success: true,
-        message: "Check your mail for OTP code",
+      res.status(403).json({
+        success: false,
+        message: "Please verify your account!",
         customerId: existEmail,
       });
     }
   }
 });
-
+exports.resendOTP = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const account = await Account.findById(id);
+  if (!account) {
+    throw new ApiError(400, "Email or password is incorrect");
+  }
+  var otpcode = otpGenerator.generate(6, {
+    upperCaseAlphabets: false,
+    specialChars: false,
+    digits: true,
+    lowerCaseAlphabets: false,
+  });
+  await Otp.findOneAndRemove({ accountId: account._id });
+  await Otp.create({
+    accountId: account._id,
+    otp: otpcode,
+  });
+  await EmailService.sendMail(
+    process.env.EMAIL,
+    `${account.email}`,
+    "OTP VERIFICATION",
+    `Your OTP code: ${otpcode}`
+  );
+  res.status(200).json({
+    success: true,
+    message: "Check your mail for OTP code",
+  });
+});
 exports.updatePassword = catchAsync(async (req, res) => {
   const { email } = req.user;
   const { oldPassword, newPassword } = req.body;
@@ -204,8 +242,6 @@ exports.resetPassword = catchAsync(async (req, res) => {
   const { newPassword } = req.body;
   const tokenUser = await Token.findOne({ userId });
   const isValid = bcrypt.compareSync(token, tokenUser.token);
-  console.log(token);
-  console.log(isValid);
   if (!userId || !token || !tokenUser || !isValid) {
     throw new ApiError(400, "Invalid token and id");
   }

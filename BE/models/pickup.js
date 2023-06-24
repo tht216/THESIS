@@ -6,19 +6,16 @@ const PickupSchema = new Schema(
   {
     customerId: {
       type: Schema.Types.ObjectId,
-      ref: "customer",
+      ref: "Customer",
     },
     companyId: {
       type: Schema.Types.ObjectId,
-      ref: "company",
+      ref: "Company",
     },
     status: {
       type: String,
       enum: STATUS,
       default: STATUS.RECEIVED,
-    },
-    date: {
-      type: Date,
     },
     long: {
       type: Number,
@@ -32,6 +29,20 @@ const PickupSchema = new Schema(
       type: String,
       required: [true, "Address is required"],
     },
+    amount: {
+      type: Number,
+      required: [true, "Number is required"],
+    },
+    price: {
+      type: Number,
+      required: [true, "Price is required"],
+    },
+    serviceType: {
+      type: String,
+      required: [true, "Service Type is required"],
+    },
+    note: { type: String },
+    rating: { type: Number },
     isMissed: {
       type: Boolean,
       required: [true, "Missing status is required"],

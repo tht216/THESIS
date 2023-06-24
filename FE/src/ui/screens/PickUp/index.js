@@ -3,11 +3,12 @@ import React from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import CustomButton from '../../components/CustomButton';
 import LottieView from 'lottie-react-native';
-import {useDispatch} from 'react-redux';
-import { nextPickup } from '../../../utils/pickupSlice';
+import {useDispatch, useSelector} from 'react-redux';
+import {nextPickup} from '../../../utils/pickupSlice';
 
 export default function PickUp() {
   const dispatch = useDispatch();
+  const {isComplete} = useSelector(selector => selector.pickupSlice);
   return (
     <SafeAreaView style={styles.AndroidSafeArea}>
       <LottieView
@@ -20,10 +21,17 @@ export default function PickUp() {
       <>
         {/* Conditionally Rendering Text in Order Tab */}
         <Text style={styles.AnimationTextstyle}>
-          Your Pick Up has been booked Successfully'
+          {isComplete
+            ? 'The Pick Up has been delivered Successfully'
+            : 'Your Pick Up has been booked Successfully'}
         </Text>
       </>
-      <CustomButton title="Return Home" onPress={() => {dispatch(nextPickup())}} />
+      <CustomButton
+        title="Return Home"
+        onPress={() => {
+          dispatch(nextPickup());
+        }}
+      />
     </SafeAreaView>
   );
 }

@@ -55,14 +55,16 @@ export default function Company({navigation}) {
       const destinations = data?.company
         .reduce(
           (destination, value) =>
-            destination + `${value.companyID.lat},${value.companyID.long}|`,
+            destination + `${value.lat[0]},${value.long[0]}|`,
           '',
         )
         .slice(0, -1);
       const origins = `${lat},${long}`;
+      console.log(origins, destinations);
       distanceMatrix({origins, destinations})
         .unwrap()
         .then(payload => {
+          console.log(payload);
           const distance = payload.rows[0].elements.map(
             value => value.distance.value,
           );
@@ -70,20 +72,21 @@ export default function Company({navigation}) {
             data?.company.map((value, index) => {
               return {
                 coordinate: {
-                  latitude: value.companyID.lat,
-                  longitude: value.companyID.long,
+                  latitude: value.lat[0],
+                  longitude: value.long[0],
                 },
-                description: value.companyID.description,
-                address: value.companyID.address,
-                name: value.companyID._id.name,
-                email: value.companyID._id.email,
-                phone: value.companyID._id.phone,
-                id: value.companyID._id._id,
+                description: value.description[0],
+                address: value.address[0],
+                name: value.name[0],
+                email: value.email[0],
+                phone: value.phone[0],
+                id: value.companyID,
                 image: 'NA',
-                rating: 4.5,
+                rating: value.current_rating,
                 subPrice: value.price * amount,
                 distance: distance[index],
                 delivery: (0.01 * distance[index]).toFixed(2),
+                totalRatings: value.review,
               };
             }),
           );
@@ -208,6 +211,13 @@ export default function Company({navigation}) {
           onPress={() => filter(5000)}
           style={{backgroundColor: 'rgba(255,255,255,0.8)', borderRadius: 50}}>
           <Text style={{paddingVertical: 12, paddingHorizontal: 24}}>5km</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => setMarkers(position)}
+          style={{backgroundColor: 'rgba(255,255,255,0.8)', borderRadius: 50}}>
+          <Text style={{paddingVertical: 12, paddingHorizontal: 24}}>
+            {'> '}5km
+          </Text>
         </TouchableOpacity>
       </View>
       <MapView

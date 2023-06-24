@@ -9,7 +9,7 @@ const PaymentSchema = new Schema(
     },
     _id: {
       type: mongoose.Types.ObjectId,
-      ref: "pickup",
+      ref: "Pickup",
     },
     price: {
       type: Number,

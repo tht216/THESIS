@@ -27,6 +27,7 @@
     "nodemon": "^2.0.16",
     "otp-generator": "^4.0.0",
     "path": "^0.12.7",
-    "socket.io": "^4.6.1"
+    "socket.io": "^4.6.1",
+    "stripe": "^12.5.0"
   }
 }

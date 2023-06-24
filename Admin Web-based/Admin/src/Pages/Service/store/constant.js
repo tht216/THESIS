@@ -1,0 +1,24 @@
+const SERVICE = "SERVICE";
+
+const GET_ALL_SERVICE = `${SERVICE}/getAll`;
+const CREATE_SERVICE = `${SERVICE}/create`;
+const SAVE_ALL_SERVICE = `${SERVICE}/saveAll`;
+const SAVE_TOTAL = `${SERVICE}/saveTotalPage`;
+const SAVE_DETAIL = `${SERVICE}/saveDetail`;
+const SET_LOADING_STEP = `${SERVICE}/setLoadingStep`;
+const DELETE_SERVICE = `${SERVICE}/delete`;
+const EDIT_SERVICE = `${SERVICE}/edit`;
+const GET_DETAIL_SERVICE = `${SERVICE}/getDetail`;
+
+export {
+  SERVICE,
+  GET_ALL_SERVICE,
+  SAVE_ALL_SERVICE,
+  SET_LOADING_STEP,
+  SAVE_TOTAL,
+  CREATE_SERVICE,
+  DELETE_SERVICE,
+  SAVE_DETAIL,
+  EDIT_SERVICE,
+  GET_DETAIL_SERVICE,
+};

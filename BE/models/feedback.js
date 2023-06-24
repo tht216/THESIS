@@ -4,7 +4,7 @@ const FeedbackSchema = new Schema(
   {
     accountId: {
       type: Schema.Types.ObjectId,
-      ref: "account",
+      ref: "Account",
     },
 
     rating: {
@@ -21,7 +21,7 @@ const FeedbackSchema = new Schema(
     },
   },
   {
-    collection: "DAO-feedbacks",
+    collection: "Feedback",
     timestamps: true,
   }
 );

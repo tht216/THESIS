@@ -5,7 +5,7 @@ const initialStates = {
   customerId: '',
   companyId: '',
   status: '',
-  long:  107.281772, 
+  long: 107.281772,
   lat: 10.418179,
   address: 'C79J+CXP, Phước Hải, Đất Đỏ, Bà Rịa - Vũng Tàu, Việt Nam',
   amount: 0,
@@ -13,6 +13,8 @@ const initialStates = {
   subPrice: 0,
   delivery: 0,
   isMissed: false,
+  isComplete: false,
+  id: '',
 };
 
 export const pickupSlice = createSlice({
@@ -64,7 +66,11 @@ export const pickupSlice = createSlice({
         state.delivery = action.payload || 0;
       }
     },
-
+    saveId: (state, action) => {
+      if (action.payload) {
+        state.id = action.payload || '';
+      }
+    },
     completePickup: state => {
       state.isDone = true;
       state.customerId = '';
@@ -76,8 +82,21 @@ export const pickupSlice = createSlice({
       state.amount = 0;
       state.serviceType = '';
     },
+    completeDeliveryPickup: state => {
+      state.isDone = true;
+      state.isComplete = true;
+      state.customerId = '';
+      state.companyId = '';
+      state.status = '';
+      state.long = 0;
+      state.lat = 0;
+      state.address = '';
+      state.amount = 0;
+      state.serviceType = '';
+    },
     nextPickup: state => {
       state.isDone = false;
+      state.isComplete = false;
     },
   },
 });
@@ -93,7 +112,9 @@ export const {
   saveLong,
   saveServiceType,
   saveSubPrice,
-  saveDelivery
+  saveDelivery,
+  completeDeliveryPickup,
+  saveId
 } = pickupSlice.actions;
 
 export default pickupSlice.reducer;

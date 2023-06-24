@@ -4,8 +4,17 @@ exports.ROLES = {
   COMPANY: "company",
 };
 exports.STATUS = {
-  RECEIVED: "received",
-  PENDING: "pending",
-  DONE: "done",
-  REJECTED: "rejected"
+  RECEIVED: "Received",
+  PENDING: "Pending",
+  DONE: "Done",
+  REJECTED: "Rejected"
+}
+exports.SERVICE = {
+  ORGANIC: "Organic",
+  PLASTIC: "Plastic",
+  GLASS: "Glass",
+  HAZARDOUS: "Hazardous",
+  EWASTE: "E-waste",
+  PAPER: "Paper",
+  METAL: "Metal",
 }

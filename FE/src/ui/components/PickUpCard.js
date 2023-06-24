@@ -5,29 +5,52 @@ import {
   Text,
   Image,
   TouchableOpacity,
+  Alert,
+  Linking,
 } from 'react-native';
-import React, {memo} from 'react';
-import {useNavigation} from '@react-navigation/native';
-import {routes} from '../../navigation/routes';
+import React, {memo, useState} from 'react';
 import {colors} from '../../themes/Colors';
 import StatusIndicator from './StatusIndicator';
 import {CustomCard} from './CustomCard';
 import {Rating} from 'react-native-ratings';
-
-import Fontisto from 'react-native-vector-icons/Fontisto';
+import {useRatingPickupMutation} from '../../utils/api';
+import Icon from 'react-native-vector-icons/Ionicons';
+import {units} from '../../themes/Units';
 
 const {width} = Dimensions.get('screen');
 
 export default PickUpCard = memo(
-  ({data}) => {
-    const navigation = useNavigation();
-
-    const handleOnPress = () => {
-      navigation.navigate(routes.DETAIL, {data});
+  ({data, rating}) => {
+    const [star, setStar] = useState(0);
+    const [ratingPickup] = useRatingPickupMutation();
+    console.log(data.rating);
+    const ratingCompleted = rating => {
+      setStar(rating);
+      Alert.alert(
+        'Confirmation',
+        `Are you sure to rate this pickup ${rating} star(s)`,
+        [
+          {
+            text: 'Cancel',
+            onPress: () => setStar(0),
+            style: 'cancel',
+          },
+          {
+            text: 'OK',
+            onPress: () =>
+              ratingPickup({id: data._id, rating})
+                .unwrap()
+                .then(payload => console.log(payload))
+                .catch(error => console.log(error)),
+          },
+        ],
+      );
     };
-
+    const onClickPhone = () => {
+      Linking.openURL(`tel:${data?.companyId._id.phone}`);
+    };
     return (
-      <TouchableOpacity style={{marginBottom: 12}} onPress={handleOnPress}>
+      <View style={{marginBottom: 12}}>
         <View
           style={{
             height: 180,
@@ -44,13 +67,18 @@ export default PickUpCard = memo(
             shadowRadius: 9.22,
             elevation: 12,
           }}>
-          <Image source={{uri: 'https://vcdn1-vnexpress.vnecdn.net/2022/09/16/-9660-1663317578.jpg?w=900&h=540&q=100&dpr=1&fit=crop&s=ZZ14jxe3Whlcw7PASlpBRA'}} style={styles.icon} />
+          <Image
+            source={{
+              uri: 'https://vcdn1-vnexpress.vnecdn.net/2022/09/16/-9660-1663317578.jpg?w=900&h=540&q=100&dpr=1&fit=crop&s=ZZ14jxe3Whlcw7PASlpBRA',
+            }}
+            style={styles.icon}
+          />
         </View>
         <CustomCard elevated={true} style={styles.card}>
           <View style={styles.infoContainer}>
             <View style={styles.info}>
               <Text numberOfLines={1} style={styles.mainText}>
-                {data?.companyId.name}
+                {data?.companyId._id.name}
               </Text>
               <View style={styles.infoRow}>
                 <View
@@ -71,25 +99,30 @@ export default PickUpCard = memo(
                   </Text>
                   <StatusIndicator status={data?.status.toLocaleUpperCase()} />
                 </View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    marginHorizontal: 10,
-                  }}>
-                  <Rating
-                    ratingCount={5}
-                    type="custom"
-                    readonly={true}
-                    startingValue={data?.star || 0}
-                    imageSize={16}
-                    ratingColor={colors.WHITE}
-                    tintColor={colors.DARKORANGE}
-                    ratingBackgroundColor={colors.DARKGRAY}
-                    style={{backgroundColor: 'transparent'}}
-                  />
-                  <Text style={styles.ratingTxt}>{data?.star || 0}</Text>
-                </View>
+                {rating && (
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      marginHorizontal: 10,
+                    }}>
+                    <Rating
+                      key={star}
+                      ratingCount={5}
+                      type="custom"
+                      readonly={data?.rating}
+                      onFinishRating={ratingCompleted}
+                      startingValue={data?.rating || star}
+                      imageSize={16}
+                      ratingColor={colors.WHITE}
+                      tintColor={colors.DARKORANGE}
+                      ratingBackgroundColor={colors.DARKGRAY}
+                      style={{backgroundColor: 'transparent'}}
+                    />
+                    <Text style={styles.ratingTxt}>{data?.rating || star}</Text>
+                  </View>
+                )}
+
                 <View
                   style={{
                     flexDirection: 'row',
@@ -120,11 +153,19 @@ export default PickUpCard = memo(
                   </View>
                 </View>
               </View>
-              <View style={styles.infoRow}></View>
+              <View style={styles.infoRow}>
+                {!rating && (
+                  <TouchableOpacity
+                    style={styles.phoneContainer}
+                    onPress={onClickPhone}>
+                    <Icon name="call" size={25} color={colors.WHITE} />
+                  </TouchableOpacity>
+                )}
+              </View>
             </View>
           </View>
         </CustomCard>
-      </TouchableOpacity>
+      </View>
     );
   },
   (prev, next) => prev.data.id === next.data.id,
@@ -183,4 +224,15 @@ const styles = StyleSheet.create({
   },
   viewContainer: {justifyContent: 'center', marginHorizontal: 5},
   viewText: {color: colors.WHITE, fontSize: 22, fontWeight: 'bold'},
+  phoneContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: colors.ORANGE,
+    borderRadius: 14,
+    paddingHorizontal: units.width / 31,
+    paddingVertical: units.height / 67,
+    backgroundColor: colors.ORANGE,
+    marginTop: 12,
+  },
 });

@@ -195,7 +195,7 @@ export default function ChooseAmount({navigation, route}) {
             lineHeight: 28,
             marginBottom: 12,
           }}>
-          About
+          Description
         </Text>
         <Text style={{marginBottom: 12}}>{params.desc}</Text>
         <View

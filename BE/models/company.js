@@ -5,7 +5,11 @@ const CompanySchema = new Schema(
   {
     _id: {
       type: Schema.Types.ObjectId,
-      ref: "account",
+      ref: "Account",
+    },
+    description: {
+      type: String,
+      required: [true, "Description is required"],
     },
     long: {
       type: Number,
@@ -18,14 +22,6 @@ const CompanySchema = new Schema(
     address: {
         type: String,
         required: [true, "Address is required"],
-    },
-    openTime: {
-        type: Date,
-        required: [true, "Open time is required"],
-    },
-    closeTime: {
-        type: Date,
-        required: [true, "close time is required"],
     },
     createAt: {
       type: Date,

@@ -8,7 +8,7 @@ import {
   FlatList,
   ScrollView,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useMemo} from 'react';
 import {colors} from '../../../themes/Colors';
 import {units} from '../../../themes/Units';
 import {routes} from '../../../navigation/routes';
@@ -36,49 +36,50 @@ import {
   saveServiceType,
 } from '../../../utils/pickupSlice';
 import {getToken} from '../../../utils/localstorage';
-import {useGetDetailQuery} from '../../../utils/api';
+import {useGetDetailQuery, useHistoryPickupQuery} from '../../../utils/api';
 import {DrawerLayoutAndroid} from 'react-native';
 import io from 'socket.io-client';
 
 const Home = ({navigation}) => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
+  const [numberOfPickup, setNumberOfPickup] = useState(0)
+  const {data: history} = useHistoryPickupQuery();
   const address = useSelector(selector => selector.userReduce.address);
   const [geocodeLocation] = useGeocodeLocationMutation();
   const {isLoading, data, error} = useGetDetailQuery();
 
-  const socket = io('http://192.168.1.5:3000');
-
   useEffect(() => {
-    // GetLocation.getCurrentPosition({
-    //   enableHighAccuracy: true,
-    //   timeout: 60000,
-    // })
-    //   .then(async locations => {
-    //     dispatch(setLocation(`${locations.latitude}, ${locations.longitude}`));
-    //     dispatch(saveLat(locations.latitude));
-    //     dispatch(saveLong(locations.longitude));
-    //     geocodeLocation(`${locations.latitude}, ${locations.longitude}`)
-    //       .unwrap()
-    //       .then(payload => {
-    //         console.log(payload.results[0]);
-    //         dispatch(setAddress(payload.results[0].formatted_address));
-    //         dispatch(saveAddress(payload.results[0].formatted_address));
-    //         setLoading(false);
-    //       })
-    //       .catch(error => {
-    //         console.log(error);
-    //       });
-    //   })
-    //   .catch(error => {
-    //     const {code, message} = error;
-    //     console.warn(code, message);
-    //   });
-    socket.on('connect', () => {
-      console.log('Connected to server');
-    });
+    GetLocation.getCurrentPosition({
+      enableHighAccuracy: true,
+      timeout: 60000,
+    })
+      .then(async locations => {
+        dispatch(setLocation(`${locations.latitude}, ${locations.longitude}`));
+        dispatch(saveLat(locations.latitude));
+        dispatch(saveLong(locations.longitude));
+        geocodeLocation(`${locations.latitude}, ${locations.longitude}`)
+          .unwrap()
+          .then(payload => {
+            console.log(payload);
+            dispatch(setAddress(payload.results[0].formatted_address));
+            dispatch(saveAddress(payload.results[0].formatted_address));
+            setLoading(false);
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      })
+      .catch(error => {
+        const {code, message} = error;
+        console.warn(code, message);
+      });
   }, []);
-
+  const filter = useMemo(() => {
+    if (history?.pickup) {
+      setNumberOfPickup(history?.pickup.length);
+    }
+  }, [history?.pickup]);
   const wasteItems = [
     {
       id: 1,
@@ -280,7 +281,7 @@ const Home = ({navigation}) => {
               <Text style={{fontWeight: 'bold', marginBottom: 10}}>
                 Total Pickup
               </Text>
-              <Text style={{fontWeight: 'bold', fontSize: 18}}>189</Text>
+              <Text style={{fontWeight: 'bold', fontSize: 18}}>{numberOfPickup}</Text>
             </View>
           </CustomCard>
           {/* search bar */}

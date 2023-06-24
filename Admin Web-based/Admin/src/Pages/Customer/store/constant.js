@@ -1,0 +1,24 @@
+const CUSTOMER = "CUSTOMER";
+
+const GET_ALL_CUSTOMER = `${CUSTOMER}/getAll`;
+const CREATE_CUSTOMER = `${CUSTOMER}/create`;
+const SAVE_ALL_CUSTOMER = `${CUSTOMER}/saveAll`;
+const SAVE_TOTAL = `${CUSTOMER}/saveTotalPage`;
+const SAVE_DETAIL = `${CUSTOMER}/saveDetail`;
+const SET_LOADING_STEP = `${CUSTOMER}/setLoadingStep`;
+const DELETE_CUSTOMER = `${CUSTOMER}/delete`;
+const EDIT_CUSTOMER = `${CUSTOMER}/edit`;
+const GET_DETAIL_CUSTOMER = `${CUSTOMER}/getDetail`;
+
+export {
+  CUSTOMER,
+  GET_ALL_CUSTOMER,
+  SAVE_ALL_CUSTOMER,
+  SET_LOADING_STEP,
+  SAVE_TOTAL,
+  CREATE_CUSTOMER,
+  DELETE_CUSTOMER,
+  SAVE_DETAIL,
+  EDIT_CUSTOMER,
+  GET_DETAIL_CUSTOMER,
+};
